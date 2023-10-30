@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.WebApi.Controllers
 {
-    [ApiController]
-    [Route("api/contatos")]    
+    //[ApiController]
+    [Route("api/contatos")]
     public class ContatoController : ControllerBase
     {
         private ServicoContato servicoContato;
@@ -37,9 +37,10 @@ namespace eAgenda.WebApi.Controllers
             servicoContato = new ServicoContato(repositorioContato, contextoPersistencia);
         }
 
+       
         [HttpGet]
         public List<ListarContatoViewModel> SeleciontarTodos(StatusFavoritoEnum statusFavorito)
-        {            
+        {
             var contatos = servicoContato.SelecionarTodos(statusFavorito).Value;
 
             var contatosViewModel = new List<ListarContatoViewModel>();
@@ -51,7 +52,7 @@ namespace eAgenda.WebApi.Controllers
                     Id = contato.Id,
                     Nome = contato.Nome,
                     Empresa = contato.Empresa,
-                    Cargo = contato.Cargo,                    
+                    Cargo = contato.Cargo,
                     Telefone = contato.Telefone
                 };
 
@@ -62,9 +63,9 @@ namespace eAgenda.WebApi.Controllers
         }
 
         [HttpGet("visualizacao-completa/{id}")]
-        public VisualizarContatoViewModel SeleciontarPorId(string id)
-        {           
-            var contato = servicoContato.SelecionarPorId(Guid.Parse(id)).Value;
+        public VisualizarContatoViewModel SeleciontarPorId(Guid id)
+        {
+            var contato = servicoContato.SelecionarPorId(id).Value;
 
             var contatoViewModel = new VisualizarContatoViewModel
             {
@@ -93,8 +94,71 @@ namespace eAgenda.WebApi.Controllers
             return contatoViewModel;
         }
 
+        [HttpPost]
+        public string Inserir(InserirContatoViewModel contatoViewModel)
+        {
+            var contato = new Contato(contatoViewModel.Nome, contatoViewModel.Email, contatoViewModel.Telefone,
+                contatoViewModel.Empresa, contatoViewModel.Cargo);
+
+            var resultado = servicoContato.Inserir(contato);
+
+            if (resultado.IsSuccess)
+                return "Contato inserido com sucesso";
+
+            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
+
+            return string.Join("\r\n", erros);
+        }
+
+        
+        [HttpPut("{id}")]
+        public string Editar(Guid id, EditarContatoViewModel contatoViewModel)
+        {
+            var contato = servicoContato.SelecionarPorId(id).Value;
+
+            contato.Nome = contatoViewModel.Nome;
+            contato.Email = contatoViewModel.Email;
+            contato.Telefone = contatoViewModel.Telefone;
+            contato.Empresa = contatoViewModel.Empresa;
+            contato.Cargo = contatoViewModel.Cargo;
+
+            var resultado = servicoContato.Editar(contato);
+
+            if (resultado.IsSuccess)
+                return "Contato editado com sucesso";
+
+            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
+
+            return string.Join("\r\n", erros);
+        }
+
+        
+        [HttpDelete("{id}")]
+        public string Excluir(Guid id)
+        {
+            var resultadoBusca = servicoContato.SelecionarPorId(id);            
+
+            if (resultadoBusca.IsFailed)
+            {
+                string[] errosNaBusca = resultadoBusca.Errors.Select(x => x.Message).ToArray();
+
+                return string.Join("\r\n", errosNaBusca);
+            }
+
+            var contato = resultadoBusca.Value;
+
+            var resultado = servicoContato.Excluir(contato);
+
+            if (resultado.IsSuccess)
+                return "Contato excluído com sucesso";
+
+            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
+
+            return string.Join("\r\n", erros);
+        }
+
     }
 
-    
+
 
 }
