@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.WebApi.Controllers
 {
-    //[ApiController]
+    [ApiController]
     [Route("api/contatos")]
     public class ContatoController : ControllerBase
     {
@@ -36,7 +36,6 @@ namespace eAgenda.WebApi.Controllers
 
             servicoContato = new ServicoContato(repositorioContato, contextoPersistencia);
         }
-
        
         [HttpGet]
         public List<ListarContatoViewModel> SeleciontarTodos(StatusFavoritoEnum statusFavorito)
@@ -109,7 +108,6 @@ namespace eAgenda.WebApi.Controllers
 
             return string.Join("\r\n", erros);
         }
-
         
         [HttpPut("{id}")]
         public string Editar(Guid id, EditarContatoViewModel contatoViewModel)
@@ -131,7 +129,6 @@ namespace eAgenda.WebApi.Controllers
 
             return string.Join("\r\n", erros);
         }
-
         
         [HttpDelete("{id}")]
         public string Excluir(Guid id)
@@ -158,7 +155,4 @@ namespace eAgenda.WebApi.Controllers
         }
 
     }
-
-
-
 }
