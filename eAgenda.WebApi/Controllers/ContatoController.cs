@@ -51,8 +51,7 @@ namespace eAgenda.WebApi.Controllers
                     Id = contato.Id,
                     Nome = contato.Nome,
                     Empresa = contato.Empresa,
-                    Cargo = contato.Cargo,
-                    Email = contato.Email,
+                    Cargo = contato.Cargo,                    
                     Telefone = contato.Telefone
                 };
 
