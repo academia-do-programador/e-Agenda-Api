@@ -6,12 +6,11 @@ namespace eAgenda.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            builder.Services.ConfigurarAutoMapper();  
+            builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
+            builder.Services.ConfigurarSwagger();
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
 
@@ -25,7 +24,6 @@ namespace eAgenda.WebApi
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

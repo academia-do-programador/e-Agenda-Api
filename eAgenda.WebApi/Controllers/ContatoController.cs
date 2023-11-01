@@ -1,13 +1,7 @@
 ﻿using eAgenda.Aplicacao.ModuloContato;
 using eAgenda.Dominio.ModuloContato;
-
-using eAgenda.Infra.Orm;
-using eAgenda.Infra.Orm.ModuloContato;
-using eAgenda.WebApi.ViewModels.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloContato;
 
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -16,49 +10,20 @@ namespace eAgenda.WebApi.Controllers
     public class ContatoController : ControllerBase
     {
         private ServicoContato servicoContato;
+        private IMapper mapeador;
 
-        public ContatoController()
+        public ContatoController(ServicoContato servicoContato, IMapper mapeador)
         {
-            IConfiguration configuracao = new ConfigurationBuilder()
-              .SetBasePath(Directory.GetCurrentDirectory())
-              .AddJsonFile("appsettings.json")
-              .Build();
-
-            var connectionString = configuracao.GetConnectionString("SqlServer");
-
-            var builder = new DbContextOptionsBuilder<eAgendaDbContext>();
-
-            builder.UseSqlServer(connectionString);
-
-            var contextoPersistencia = new eAgendaDbContext(builder.Options);
-
-            var repositorioContato = new RepositorioContatoOrm(contextoPersistencia);
-
-            servicoContato = new ServicoContato(repositorioContato, contextoPersistencia);
+            this.mapeador = mapeador;
+            this.servicoContato = servicoContato;          
         }
-       
+
         [HttpGet]
         public List<ListarContatoViewModel> SeleciontarTodos(StatusFavoritoEnum statusFavorito)
         {
             var contatos = servicoContato.SelecionarTodos(statusFavorito).Value;
 
-            var contatosViewModel = new List<ListarContatoViewModel>();
-
-            foreach (var contato in contatos)
-            {
-                var contatoViewModel = new ListarContatoViewModel
-                {
-                    Id = contato.Id,
-                    Nome = contato.Nome,
-                    Empresa = contato.Empresa,
-                    Cargo = contato.Cargo,
-                    Telefone = contato.Telefone
-                };
-
-                contatosViewModel.Add(contatoViewModel);
-            }
-
-            return contatosViewModel;
+            return mapeador.Map<List<ListarContatoViewModel>>(contatos);
         }
 
         [HttpGet("visualizacao-completa/{id}")]
@@ -66,39 +31,14 @@ namespace eAgenda.WebApi.Controllers
         {
             var contato = servicoContato.SelecionarPorId(id).Value;
 
-            var contatoViewModel = new VisualizarContatoViewModel
-            {
-                Id = contato.Id,
-                Nome = contato.Nome,
-                Empresa = contato.Empresa,
-                Cargo = contato.Cargo,
-                Email = contato.Email,
-                Telefone = contato.Telefone
-            };
-
-            foreach (var c in contato.Compromissos)
-            {
-                var compromissoViewModel = new ListarCompromissoViewModel
-                {
-                    Id = c.Id,
-                    Assunto = c.Assunto,
-                    Data = c.Data,
-                    HoraInicio = c.HoraInicio.ToString(@"hh\:mm\:ss"),
-                    HoraTermino = c.HoraTermino.ToString(@"hh\:mm\:ss")
-                };
-
-                contatoViewModel.Compromissos.Add(compromissoViewModel);
-            }
-
-            return contatoViewModel;
+            return mapeador.Map<VisualizarContatoViewModel>(contato);
         }
 
         [HttpPost]
         public string Inserir(InserirContatoViewModel contatoViewModel)
         {
-            var contato = new Contato(contatoViewModel.Nome, contatoViewModel.Email, contatoViewModel.Telefone,
-                contatoViewModel.Empresa, contatoViewModel.Cargo);
-
+            var contato = mapeador.Map<Contato>(contatoViewModel);
+           
             var resultado = servicoContato.Inserir(contato);
 
             if (resultado.IsSuccess)
@@ -112,13 +52,9 @@ namespace eAgenda.WebApi.Controllers
         [HttpPut("{id}")]
         public string Editar(Guid id, EditarContatoViewModel contatoViewModel)
         {
-            var contato = servicoContato.SelecionarPorId(id).Value;
+            var contatoEncontrado = servicoContato.SelecionarPorId(id).Value;
 
-            contato.Nome = contatoViewModel.Nome;
-            contato.Email = contatoViewModel.Email;
-            contato.Telefone = contatoViewModel.Telefone;
-            contato.Empresa = contatoViewModel.Empresa;
-            contato.Cargo = contatoViewModel.Cargo;
+            var contato = mapeador.Map(contatoViewModel, contatoEncontrado);           
 
             var resultado = servicoContato.Editar(contato);
 
