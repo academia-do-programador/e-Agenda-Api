@@ -1,5 +1,4 @@
-﻿using eAgenda.WebApi.Controllers;
-using eAgenda.WebApi.ViewModels.ModuloCompromisso;
+﻿using eAgenda.WebApi.ViewModels.ModuloCompromisso;
 
 namespace eAgenda.WebApi.ViewModels.ModuloContato
 {

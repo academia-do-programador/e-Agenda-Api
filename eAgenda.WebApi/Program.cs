@@ -6,7 +6,7 @@ namespace eAgenda.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            builder.Services.ConfigurarAutoMapper();  
+            builder.Services.ConfigurarAutoMapper();
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
 

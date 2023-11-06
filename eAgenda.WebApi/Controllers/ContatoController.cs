@@ -15,7 +15,7 @@ namespace eAgenda.WebApi.Controllers
         public ContatoController(ServicoContato servicoContato, IMapper mapeador)
         {
             this.mapeador = mapeador;
-            this.servicoContato = servicoContato;          
+            this.servicoContato = servicoContato;
         }
 
         [HttpGet]
@@ -38,7 +38,7 @@ namespace eAgenda.WebApi.Controllers
         public string Inserir(InserirContatoViewModel contatoViewModel)
         {
             var contato = mapeador.Map<Contato>(contatoViewModel);
-           
+
             var resultado = servicoContato.Inserir(contato);
 
             if (resultado.IsSuccess)
@@ -48,13 +48,13 @@ namespace eAgenda.WebApi.Controllers
 
             return string.Join("\r\n", erros);
         }
-        
+
         [HttpPut("{id}")]
         public string Editar(Guid id, EditarContatoViewModel contatoViewModel)
         {
             var contatoEncontrado = servicoContato.SelecionarPorId(id).Value;
 
-            var contato = mapeador.Map(contatoViewModel, contatoEncontrado);           
+            var contato = mapeador.Map(contatoViewModel, contatoEncontrado);
 
             var resultado = servicoContato.Editar(contato);
 
@@ -65,11 +65,11 @@ namespace eAgenda.WebApi.Controllers
 
             return string.Join("\r\n", erros);
         }
-        
+
         [HttpDelete("{id}")]
         public string Excluir(Guid id)
         {
-            var resultadoBusca = servicoContato.SelecionarPorId(id);            
+            var resultadoBusca = servicoContato.SelecionarPorId(id);
 
             if (resultadoBusca.IsFailed)
             {

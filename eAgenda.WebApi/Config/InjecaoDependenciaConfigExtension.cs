@@ -1,9 +1,8 @@
 ﻿using eAgenda.Aplicacao.ModuloContato;
-using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio;
-using eAgenda.Infra.Orm.ModuloContato;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infra.Orm;
-using Microsoft.EntityFrameworkCore;
+using eAgenda.Infra.Orm.ModuloContato;
 
 namespace eAgenda.WebApi.Config
 {
