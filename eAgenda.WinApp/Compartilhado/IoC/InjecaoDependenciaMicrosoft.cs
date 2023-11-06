@@ -23,6 +23,7 @@ using eAgenda.WinApp.ModuloTarefa;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.IO;
 
 namespace eAgenda.WinApp.Compartilhado.Ioc
@@ -44,7 +45,7 @@ namespace eAgenda.WinApp.Compartilhado.Ioc
             servicos.AddDbContext<IContextoPersistencia, eAgendaDbContext>(optionsBuilder =>
             {
                 optionsBuilder.UseSqlServer(connectionString);
-            });           
+            });            
 
             servicos.AddTransient<IRepositorioTarefa, RepositorioTarefaOrm>();
             servicos.AddTransient<ServicoTarefa>();

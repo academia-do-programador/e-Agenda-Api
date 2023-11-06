@@ -1,4 +1,7 @@
-﻿using eAgenda.WinApp.Compartilhado;
+﻿using eAgenda.Aplicacao.ModuloContato;
+using eAgenda.Infra.Orm;
+using eAgenda.Infra.Orm.ModuloContato;
+using eAgenda.WinApp.Compartilhado;
 using eAgenda.WinApp.Compartilhado.Ioc;
 using eAgenda.WinApp.ModuloCompromisso;
 using eAgenda.WinApp.ModuloContato;

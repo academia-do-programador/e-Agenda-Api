@@ -1,7 +1,7 @@
 ﻿using eAgenda.Aplicacao.ModuloContato;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApi.ViewModels.ModuloContato;
-
+using Microsoft.AspNetCore.Http.Extensions;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -35,59 +35,77 @@ namespace eAgenda.WebApi.Controllers
         }
 
         [HttpPost]
-        public string Inserir(InserirContatoViewModel contatoViewModel)
+        public IActionResult Inserir(InserirContatoViewModel contatoViewModel)
         {
-            var contato = mapeador.Map<Contato>(contatoViewModel);
+            try
+            {
+                var contato = mapeador.Map<Contato>(contatoViewModel);
 
-            var resultado = servicoContato.Inserir(contato);
+                var resultado = servicoContato.Inserir(contato);
 
-            if (resultado.IsSuccess)
-                return "Contato inserido com sucesso";
+                if (resultado.IsFailed)
+                    return BadRequest(resultado.Errors.Select(x => x.Message));
 
-            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
+                var enderecoContato = Request.GetDisplayUrl() + "/visualizacao-completa/" + resultado.Value.Id;
 
-            return string.Join("\r\n", erros);
+                return Created(enderecoContato, contatoViewModel);
+            }
+            catch (Exception exc)
+            {
+                return StatusCode(500, exc.Message);
+            }
         }
 
         [HttpPut("{id}")]
-        public string Editar(Guid id, EditarContatoViewModel contatoViewModel)
+        public IActionResult Editar(Guid id, EditarContatoViewModel contatoViewModel)
         {
-            var contatoEncontrado = servicoContato.SelecionarPorId(id).Value;
+            try
+            {
+                var resultadoSelecao = servicoContato.SelecionarPorId(id);
 
-            var contato = mapeador.Map(contatoViewModel, contatoEncontrado);
+                if (resultadoSelecao.IsFailed)
+                    return NotFound(resultadoSelecao.Errors.Select(x => x.Message));
 
-            var resultado = servicoContato.Editar(contato);
+                var contato = mapeador.Map(contatoViewModel, resultadoSelecao.Value);
 
-            if (resultado.IsSuccess)
-                return "Contato editado com sucesso";
+                var resultadoInsercao = servicoContato.Editar(contato);
 
-            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
+                if (resultadoInsercao.IsFailed)
+                    return BadRequest(resultadoInsercao.Errors.Select(x => x.Message));
 
-            return string.Join("\r\n", erros);
+                var enderecoContato = Request.GetDisplayUrl() + "/visualizacao-completa/" + resultadoInsercao.Value.Id;
+
+                return Ok(contatoViewModel);
+            }
+            catch (Exception exc)
+            {
+                return StatusCode(500, exc.Message);
+            }
         }
 
         [HttpDelete("{id}")]
-        public string Excluir(Guid id)
+        public IActionResult Excluir(Guid id)
         {
-            var resultadoBusca = servicoContato.SelecionarPorId(id);
-
-            if (resultadoBusca.IsFailed)
+            try
             {
-                string[] errosNaBusca = resultadoBusca.Errors.Select(x => x.Message).ToArray();
+                var resultadoSelecao = servicoContato.SelecionarPorId(id);
 
-                return string.Join("\r\n", errosNaBusca);
+                if (resultadoSelecao.IsFailed)
+                    return NotFound(resultadoSelecao.Errors.Select(x => x.Message));
+
+                var contato = resultadoSelecao.Value;
+
+                var resultadoExclusao = servicoContato.Excluir(contato);
+
+                if (resultadoExclusao.IsFailed)
+                    return BadRequest(resultadoExclusao.Errors.Select(x => x.Message));
+
+                return Ok();
             }
-
-            var contato = resultadoBusca.Value;
-
-            var resultado = servicoContato.Excluir(contato);
-
-            if (resultado.IsSuccess)
-                return "Contato excluído com sucesso";
-
-            string[] erros = resultado.Errors.Select(x => x.Message).ToArray();
-
-            return string.Join("\r\n", erros);
+            catch (Exception exc)
+            {
+                return StatusCode(500, exc.Message);
+            }
         }
 
     }
