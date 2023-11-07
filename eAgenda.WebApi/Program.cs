@@ -1,3 +1,5 @@
+using Serilog;
+
 namespace eAgenda.WebApi
 {
     public class Program
@@ -6,6 +8,22 @@ namespace eAgenda.WebApi
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.Configure<ApiBehaviorOptions>(config =>
+            {
+                config.SuppressModelStateInvalidFilter = true;
+            });
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            Log.Logger.Debug("Iniciando aplicação...");
+
+            builder.Logging.ClearProviders();
+
+            builder.Services.AddSerilog(Log.Logger);
+
             builder.Services.ConfigurarAutoMapper();
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
@@ -13,6 +31,8 @@ namespace eAgenda.WebApi
             builder.Services.AddControllers();
 
             var app = builder.Build();
+
+            app.UseMiddleware<ManipuladorExcecoes>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
