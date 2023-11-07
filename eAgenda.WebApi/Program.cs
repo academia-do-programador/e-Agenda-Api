@@ -13,17 +13,7 @@ namespace eAgenda.WebApi
                 config.SuppressModelStateInvalidFilter = true;
             });
 
-            Log.Logger = new LoggerConfiguration()
-                .MinimumLevel.Information()
-                .WriteTo.Console()
-                .CreateLogger();
-
-            Log.Logger.Debug("Iniciando aplicação...");
-
-            builder.Logging.ClearProviders();
-
-            builder.Services.AddSerilog(Log.Logger);
-
+            builder.Services.ConfigurarSerilog(builder.Logging);
             builder.Services.ConfigurarAutoMapper();
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
