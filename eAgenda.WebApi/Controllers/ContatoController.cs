@@ -24,11 +24,9 @@ namespace eAgenda.WebApi.Controllers
 
         [HttpGet]
         [ProducesResponseType(typeof(ListarContatoViewModel), 200)]
-        [ProducesResponseType(typeof(string[]), 500)]
+        [ProducesResponseType(typeof(string[]), 500)]        
         public async Task<IActionResult> SeleciontarTodos(StatusFavoritoEnum statusFavorito)
-        {
-            logger.LogInformation("Selecionado todos os contatos " + statusFavorito);
-
+        {            
             var contatoResult = await servicoContato.SelecionarTodos(statusFavorito);
 
             return Ok(new
