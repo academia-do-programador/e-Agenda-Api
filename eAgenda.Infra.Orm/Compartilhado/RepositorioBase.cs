@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace eAgenda.Infra.Orm.Compartilhado
 {
@@ -16,7 +17,7 @@ namespace eAgenda.Infra.Orm.Compartilhado
         public RepositorioBase(IContextoPersistencia contextoPersistencia)
         {
             dbContext = (eAgendaDbContext)contextoPersistencia;
-            registros = dbContext.Set<TEntity>();
+            registros = dbContext.Set<TEntity>();            
         }
 
         public virtual void Inserir(TEntity novoRegistro)
@@ -43,6 +44,11 @@ namespace eAgenda.Infra.Orm.Compartilhado
         public virtual List<TEntity> SelecionarTodos()
         {
             return registros.ToList();
+        }
+
+        public virtual async Task<List<TEntity>> SelecionarTodosAsync()
+        {
+            return await registros.ToListAsync();
         }
     }
 }

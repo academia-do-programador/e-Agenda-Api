@@ -2,7 +2,6 @@
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApi.ViewModels.ModuloContato;
 using FluentResults;
-using Microsoft.AspNetCore.Http.Extensions;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -26,17 +25,17 @@ namespace eAgenda.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ListarContatoViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public IActionResult SeleciontarTodos(StatusFavoritoEnum statusFavorito)
+        public async Task<IActionResult> SeleciontarTodos(StatusFavoritoEnum statusFavorito)
         {
             logger.LogInformation("Selecionado todos os contatos " + statusFavorito);
 
-            var contatos = servicoContato.SelecionarTodos(statusFavorito).Value;
+            var contatoResult = await servicoContato.SelecionarTodos(statusFavorito);
 
             return Ok(new
             {
                 Sucesso = true,
-                Dados = mapeador.Map<List<ListarContatoViewModel>>(contatos),
-                QtdRegistros = contatos.Count
+                Dados = mapeador.Map<List<ListarContatoViewModel>>(contatoResult.Value),
+                QtdRegistros = contatoResult.Value.Count
             });
         }
 
@@ -66,11 +65,13 @@ namespace eAgenda.WebApi.Controllers
         [ProducesResponseType(typeof(InserirContatoViewModel), 201)]
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public IActionResult Inserir(InserirContatoViewModel contatoViewModel)
+        public async Task<IActionResult> Inserir(InserirContatoViewModel contatoViewModel)
         {
             var contato = mapeador.Map<Contato>(contatoViewModel);
 
-            return ProcessarResultado(servicoContato.Inserir(contato), contatoViewModel);
+            var contatoResult = await servicoContato.Inserir(contato);
+
+            return ProcessarResultado(contatoResult, contatoViewModel);
         }
 
         [HttpPut("{id}")]
@@ -78,7 +79,7 @@ namespace eAgenda.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public IActionResult Editar(Guid id, EditarContatoViewModel contatoViewModel)
+        public async Task<IActionResult> Editar(Guid id, EditarContatoViewModel contatoViewModel)
         {
             var resultadoSelecao = servicoContato.SelecionarPorId(id);
 
@@ -91,7 +92,9 @@ namespace eAgenda.WebApi.Controllers
 
             var contato = mapeador.Map(contatoViewModel, resultadoSelecao.Value);
 
-            return ProcessarResultado(servicoContato.Editar(contato), contatoViewModel);
+            var contatoResult = await servicoContato.Editar(contato);
+
+            return ProcessarResultado(contatoResult, contatoViewModel);
         }
 
         [HttpDelete("{id}")]
@@ -99,7 +102,7 @@ namespace eAgenda.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 400)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public IActionResult Excluir(Guid id)
+        public async Task<IActionResult> Excluir(Guid id)
         {
             var resultadoSelecao = servicoContato.SelecionarPorId(id);
 
@@ -110,7 +113,9 @@ namespace eAgenda.WebApi.Controllers
                     Erros = resultadoSelecao.Errors.Select(x => x.Message)
                 });
 
-            return ProcessarResultado(servicoContato.Excluir(resultadoSelecao.Value));
+            var contatoResult = await servicoContato.Excluir(resultadoSelecao.Value);
+
+            return ProcessarResultado(contatoResult);
         }
 
         private IActionResult ProcessarResultado(Result<Contato> contatoResult, FormsContatoViewModel contatoViewModel = null)

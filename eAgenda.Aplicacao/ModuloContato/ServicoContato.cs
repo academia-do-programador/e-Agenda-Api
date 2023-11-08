@@ -4,6 +4,7 @@ using FluentResults;
 using Serilog;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eAgenda.Aplicacao.ModuloContato
 {
@@ -19,10 +20,8 @@ namespace eAgenda.Aplicacao.ModuloContato
             this.contextoPersistencia = contexto;
         }
 
-        public Result<Contato> Inserir(Contato contato)
-        {
-            Log.Logger.Debug("Tentando inserir contato... {@c}", contato);
-
+        public async Task<Result<Contato>> Inserir(Contato contato)
+        {            
             Result resultado = Validar(contato);
 
             if (resultado.IsFailed)
@@ -32,10 +31,8 @@ namespace eAgenda.Aplicacao.ModuloContato
             {
                 repositorioContato.Inserir(contato);
 
-                contextoPersistencia.GravarDados();
-
-                Log.Logger.Information("Contato {ContatoId} inserido com sucesso", contato.Id);
-
+                await contextoPersistencia.GravarDadosAsync();
+                               
                 return Result.Ok(contato);
             }
             catch (Exception ex)
@@ -43,14 +40,12 @@ namespace eAgenda.Aplicacao.ModuloContato
                 contextoPersistencia.DesfazerAlteracoes();
 
                 string msgErro = "Falha no sistema ao tentar inserir o Contato";
-
-                Log.Logger.Error(ex, msgErro + " {ContatoId} ", contato.Id);
-
+                
                 throw new Exception(msgErro, ex);
             }
         }
 
-        public Result<Contato> Editar(Contato contato)
+        public async Task<Result<Contato>> Editar(Contato contato)
         {
             Log.Logger.Debug("Tentando editar contato... {@c}", contato);
 
@@ -63,7 +58,7 @@ namespace eAgenda.Aplicacao.ModuloContato
             {
                 repositorioContato.Editar(contato);
 
-                contextoPersistencia.GravarDados();
+                await contextoPersistencia.GravarDadosAsync();
 
                 Log.Logger.Information("Contato {ContatoId} editado com sucesso", contato.Id);
             }
@@ -81,14 +76,14 @@ namespace eAgenda.Aplicacao.ModuloContato
             return Result.Ok(contato);
         }
 
-        public Result Excluir(Guid id)
+        public async Task<Result> Excluir(Guid id)
         {
             try
             {
                 var contatoResult = SelecionarPorId(id);
 
                 if (contatoResult.IsSuccess)
-                    return Excluir(contatoResult.Value);
+                    return await Excluir(contatoResult.Value);
 
                 return Result.Fail(contatoResult.Errors);
             }
@@ -101,8 +96,8 @@ namespace eAgenda.Aplicacao.ModuloContato
                 throw new Exception(msgErro, exc);
             }
         }
-
-        public Result Excluir(Contato contato)
+        
+        public async Task<Result> Excluir(Contato contato)
         {
             Log.Logger.Debug("Tentando excluir contato... {@c}", contato);
 
@@ -110,7 +105,7 @@ namespace eAgenda.Aplicacao.ModuloContato
             {
                 repositorioContato.Excluir(contato);
 
-                contextoPersistencia.GravarDados();
+                await contextoPersistencia.GravarDadosAsync();
 
                 Log.Logger.Information("Contato {ContatoId} editado com sucesso", contato.Id);
 
@@ -128,13 +123,19 @@ namespace eAgenda.Aplicacao.ModuloContato
             }
         }
 
-        public Result<List<Contato>> SelecionarTodos(StatusFavoritoEnum statusFavorito)
+        //Task<Result<List<Contato>>>
+        //  -> Retorna vários contatos de maneira fácil a manipulação
+        //  -> Numa estrutura que facilita a resposta de sucesso ou falha 
+        //  -> De maneira assíncrona
+
+        //Contato[] -> Retorna vários contatos
+        public async Task<Result<List<Contato>>> SelecionarTodos(StatusFavoritoEnum statusFavorito)
         {
             Log.Logger.Debug("Tentando selecionar contatos...");
 
             try
             {
-                var contatos = repositorioContato.SelecionarTodos(statusFavorito);
+                var contatos = await repositorioContato.SelecionarTodosAsync(statusFavorito);
 
                 Log.Logger.Information("Contatos selecionados com sucesso");
 

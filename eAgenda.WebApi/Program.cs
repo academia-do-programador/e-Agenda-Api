@@ -1,3 +1,4 @@
+using eAgenda.WebApi.Filters;
 using Serilog;
 
 namespace eAgenda.WebApi
@@ -18,7 +19,10 @@ namespace eAgenda.WebApi
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers( config =>
+            {
+                config.Filters.Add<SerilogActionFilter>();
+            });
 
             var app = builder.Build();
 
