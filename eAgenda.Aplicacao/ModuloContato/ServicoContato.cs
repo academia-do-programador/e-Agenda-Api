@@ -28,7 +28,7 @@ namespace eAgenda.Aplicacao.ModuloContato
             if (resultado.IsFailed)
                 return Result.Fail(resultado.Errors);
 
-            repositorioContato.Inserir(contato);
+            await repositorioContato.InserirAsync(contato);
 
             await contextoPersistencia.GravarDadosAsync();
 

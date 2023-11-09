@@ -22,25 +22,25 @@ namespace eAgenda.WebApi.Controllers
             });
         }
 
-        public override NotFoundObjectResult NotFound(object erros)
+        public override NotFoundObjectResult NotFound(object objetoComErros)
         {
-            IList<IError> errors = (List<IError>)erros;
+            IList<IError> erros = (List<IError>)objetoComErros;
 
             return base.NotFound(new
             {
                 Sucesso = false,
-                Erros = errors.Select(x => x.Message)
+                Erros = erros.Select(x => x.Message)
             });
         }
 
-        public override BadRequestObjectResult BadRequest(object erros)
+        public override BadRequestObjectResult BadRequest(object objetoComErros)
         {
-            IList<IError> errors = (List<IError>)erros;
+            IList<IError> erros = (List<IError>)objetoComErros;
 
             return base.BadRequest(new
             {
                 Sucesso = false,
-                Erros = errors.Select(x => x.Message)
+                Erros = erros.Select(x => x.Message)
             });
         }
     }

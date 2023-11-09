@@ -7,13 +7,23 @@ namespace eAgenda.WebApi.Config.AutomapperConfig
     {
         public CompromissoProfile()
         {
-            CreateMap<Compromisso, ListarCompromissoViewModel>()
-                .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
-                .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
-                .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
+            ConfigurarMapeamentoEntidadeParaViewModel();
 
+            ConfigurarMapeamentoViewModelParaEntidade();
+        }
+
+        private void ConfigurarMapeamentoViewModelParaEntidade()
+        {
             CreateMap<InserirCompromissoViewModel, Compromisso>();
             CreateMap<EditarCompromissoViewModel, Compromisso>();
+        }
+
+        private void ConfigurarMapeamentoEntidadeParaViewModel()
+        {
+            CreateMap<Compromisso, ListarCompromissoViewModel>()
+                            .ForMember(destino => destino.Data, opt => opt.MapFrom(origem => origem.Data.ToShortDateString()))
+                            .ForMember(destino => destino.HoraInicio, opt => opt.MapFrom(origem => origem.HoraInicio.ToString(@"hh\:mm")))
+                            .ForMember(destino => destino.HoraTermino, opt => opt.MapFrom(origem => origem.HoraTermino.ToString(@"hh\:mm")));
 
             CreateMap<Compromisso, VisualizarCompromissoViewModel>();
         }

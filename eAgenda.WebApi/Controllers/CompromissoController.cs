@@ -22,7 +22,7 @@ namespace eAgenda.WebApi.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ListarCompromissoViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> SeleciontarTodos()
+        public async Task<IActionResult> SelecionarTodos()
         {
             var compromissoResult = servicoCompromisso.SelecionarTodos();
 
@@ -35,7 +35,7 @@ namespace eAgenda.WebApi.Controllers
         [ProducesResponseType(typeof(VisualizarCompromissoViewModel), 200)]
         [ProducesResponseType(typeof(string[]), 404)]
         [ProducesResponseType(typeof(string[]), 500)]
-        public async Task<IActionResult> SeleciontarPorId(Guid id)
+        public async Task<IActionResult> SelecionarPorId(Guid id)
         {
             var compromissoResult = servicoCompromisso.SelecionarPorId(id);
 

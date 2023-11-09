@@ -12,6 +12,7 @@ using eAgenda.Infra.Orm.ModuloCompromisso;
 using eAgenda.Infra.Orm.ModuloContato;
 using eAgenda.Infra.Orm.ModuloDespesa;
 using eAgenda.Infra.Orm.ModuloTarefa;
+using eAgenda.WebApi.Config.AutoMapperConfig;
 
 namespace eAgenda.WebApi.Config
 {
@@ -40,6 +41,8 @@ namespace eAgenda.WebApi.Config
 
             services.AddScoped<IRepositorioTarefa, RepositorioTarefaOrm>();
             services.AddTransient<ServicoTarefa>();
+
+            services.AddTransient<InserirCategoriasMappingAction>();
 
         }
     }

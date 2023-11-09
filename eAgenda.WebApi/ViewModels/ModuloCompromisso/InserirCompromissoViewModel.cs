@@ -20,4 +20,16 @@ namespace eAgenda.WebApi.ViewModels.ModuloCompromisso
 
         public Guid? ContatoId { get; set; }
     }
+
+    /**
+     * {
+    "assunto": "Feedback Cristian Ribeiro",
+    "local": "www.meet.com.br/feedback",
+    "tipoLocal": 0,
+    "link": "http://meet.com.br/feedbacks",
+    "data": "2023-10-12T14:00:00",
+    "horaInicio": "14:00",
+    "horaTermino": "15:00"
+}
+     */
 }
