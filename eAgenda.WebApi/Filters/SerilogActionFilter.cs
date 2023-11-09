@@ -8,36 +8,29 @@ namespace eAgenda.WebApi.Filters
     {
         private object nomeEndpoint;
         private object nomeModulo;
-
-        public string NomeEndpoint
-        {
-            get
-            {
-                return this.nomeEndpoint.ToString()!
-                    .SepararPalavrasPorMaiusculas();
-            }
-        }
+       
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
-            nomeEndpoint = context.RouteData.Values["action"];
+            nomeEndpoint = context.RouteData.Values["action"]!
+                .ToString()!.SepararPalavrasPorMaiusculas();
 
             nomeModulo = context.RouteData.Values["controller"];
 
-            Log.Logger.Information($"[Módulo de {nomeModulo}] -> Tentando {NomeEndpoint}...");
+            Log.Logger.Information($"[Módulo de {nomeModulo}] -> Tentando {nomeEndpoint}...");
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
-            if (context.Exception == null) 
+            if (context.Exception == null)
             {
-                Log.Logger.Information($"[Módulo de {nomeModulo}] -> {NomeEndpoint} executado com sucesso");
+                Log.Logger.Information($"[Módulo de {nomeModulo}] -> {nomeEndpoint} executado com sucesso");
             }
             else if (context.Exception != null)
             {
-                Log.Logger.Error($"[Módulo de {nomeModulo}] -> Falha ao executar {NomeEndpoint}");
+                Log.Logger.Error($"[Módulo de {nomeModulo}] -> Falha ao executar {nomeEndpoint}");
             }
-        }        
+        }
     }
 
     public static class StringExtensions
@@ -50,10 +43,8 @@ namespace eAgenda.WebApi.Filters
 
             string nomeMetodoSeparado = "";
 
-            foreach (Match m in matches)
-            {
-                nomeMetodoSeparado += m.Value + " ";
-            }
+            foreach (Match m in matches)            
+                nomeMetodoSeparado += m.Value + " ";            
 
             return nomeMetodoSeparado;
         }
