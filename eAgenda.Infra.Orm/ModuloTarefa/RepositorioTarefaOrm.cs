@@ -10,8 +10,8 @@ namespace eAgenda.Infra.Orm.ModuloTarefa
 {
     public class RepositorioTarefaOrm : RepositorioBase<Tarefa>, IRepositorioTarefa
     {
-      
-        public RepositorioTarefaOrm(IContextoPersistencia contextoPersistencia) : base (contextoPersistencia)
+
+        public RepositorioTarefaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
         }
 
@@ -25,11 +25,11 @@ namespace eAgenda.Infra.Orm.ModuloTarefa
         public List<Tarefa> SelecionarTodos(StatusTarefaEnum status)
         {
             if (status == StatusTarefaEnum.Concluidas)
-                return registros                    
+                return registros
                     .Where(x => x.PercentualConcluido == 100).ToList();
 
             else if (status == StatusTarefaEnum.Pendentes)
-                return registros                    
+                return registros
                     .Where(x => x.PercentualConcluido < 100).ToList();
 
             else

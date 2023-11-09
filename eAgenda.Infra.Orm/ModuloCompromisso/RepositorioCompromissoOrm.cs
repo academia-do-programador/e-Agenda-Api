@@ -9,11 +9,11 @@ using System.Linq;
 namespace eAgenda.Infra.Orm.ModuloCompromisso
 {
     public class RepositorioCompromissoOrm : RepositorioBase<Compromisso>, IRepositorioCompromisso
-    {        
+    {
         public RepositorioCompromissoOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
         {
         }
-      
+
         public override Compromisso SelecionarPorId(Guid id)
         {
             return registros
@@ -24,7 +24,7 @@ namespace eAgenda.Infra.Orm.ModuloCompromisso
         public override List<Compromisso> SelecionarTodos()
         {
             return registros
-                .Include(x => x.Contato)                
+                .Include(x => x.Contato)
                 .ToList();
         }
 
@@ -33,7 +33,7 @@ namespace eAgenda.Infra.Orm.ModuloCompromisso
             return registros
                 .Include(x => x.Contato)
                 .Where(x => x.Data >= dataInicial)
-                .Where(x => x.Data <= dataFinal)                
+                .Where(x => x.Data <= dataFinal)
                 .ToList();
         }
 
@@ -41,7 +41,7 @@ namespace eAgenda.Infra.Orm.ModuloCompromisso
         {
             return registros
                 .Include(x => x.Contato)
-                .Where(x => x.Data < dataDeHoje)                
+                .Where(x => x.Data < dataDeHoje)
                 .ToList();
         }
     }

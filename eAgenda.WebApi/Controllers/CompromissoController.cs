@@ -1,7 +1,6 @@
 ﻿using eAgenda.Aplicacao.ModuloCompromisso;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloCompromisso;
-using Microsoft.AspNetCore.Authorization;
 
 namespace eAgenda.WebApi.Controllers
 {

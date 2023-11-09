@@ -32,7 +32,7 @@ namespace eAgenda.ProgramacaoParalela.ConsoleApp
 
             var tempoGasto = cronometro.Elapsed;
 
-            Console.WriteLine( "Tempo gasto no processamento síncrono: " + tempoGasto);
+            Console.WriteLine("Tempo gasto no processamento síncrono: " + tempoGasto);
 
             Console.ReadLine();
         }

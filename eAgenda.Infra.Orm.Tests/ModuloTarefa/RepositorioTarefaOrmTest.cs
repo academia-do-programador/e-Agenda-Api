@@ -3,10 +3,8 @@
 using eAgenda.Infra.Orm;
 using eAgenda.Infra.Orm.ModuloTarefa;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
-using System.IO;
 
 namespace eAgenda.Infra.BancoDados.Tests.ModuloTarefa
 {

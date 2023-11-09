@@ -1,9 +1,6 @@
-using eAgenda.WebApi.Filters;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-
 namespace eAgenda.WebApi
 {
-    
+
 
     public class Program
     {

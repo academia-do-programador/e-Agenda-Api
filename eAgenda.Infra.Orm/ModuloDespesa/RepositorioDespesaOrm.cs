@@ -17,14 +17,14 @@ namespace eAgenda.Infra.Orm.ModuloDespesa
         public List<Despesa> SelecionarDespesasUltimos30Dias(DateTime dataAtual)
         {
             return registros
-               .Where(x => x.Data >= dataAtual.AddDays(-30))               
+               .Where(x => x.Data >= dataAtual.AddDays(-30))
                .ToList();
         }
 
         public List<Despesa> SelecionarDespesasAntigas(DateTime dataAtual)
         {
             return registros
-               .Where(x => x.Data <= dataAtual.AddDays(-30))               
+               .Where(x => x.Data <= dataAtual.AddDays(-30))
                .ToList();
         }
 

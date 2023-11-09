@@ -9,9 +9,9 @@ using System.Linq;
 namespace eAgenda.Infra.Orm.ModuloDespesa
 {
     public class RepositorioCategoriaOrm : RepositorioBase<Categoria>, IRepositorioCategoria
-    {       
+    {
         public RepositorioCategoriaOrm(IContextoPersistencia contextoPersistencia) : base(contextoPersistencia)
-        {            
+        {
         }
 
         public List<Categoria> SelecionarMuitos(List<Guid> idsCategoriasSelecionadas)

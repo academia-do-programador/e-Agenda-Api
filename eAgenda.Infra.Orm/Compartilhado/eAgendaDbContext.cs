@@ -12,10 +12,10 @@ namespace eAgenda.Infra.Orm
 {
     public class eAgendaDbContext : DbContext, IContextoPersistencia
     {
-       
+
         public eAgendaDbContext(DbContextOptions options) : base(options)
-        {          
-        }    
+        {
+        }
 
         public void GravarDados()
         {
@@ -24,7 +24,7 @@ namespace eAgenda.Infra.Orm
 
         public async Task<bool> GravarDadosAsync()
         {
-            int registrosAfetados = await SaveChangesAsync(); 
+            int registrosAfetados = await SaveChangesAsync();
 
             return registrosAfetados > 0;
         }
@@ -60,7 +60,7 @@ namespace eAgenda.Infra.Orm
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
             ILoggerFactory loggerFactory = LoggerFactory.Create((x) =>
             {
                 x.AddSerilog(Log.Logger);
@@ -82,6 +82,6 @@ namespace eAgenda.Infra.Orm
             base.OnModelCreating(modelBuilder);
         }
 
-        
+
     }
 }

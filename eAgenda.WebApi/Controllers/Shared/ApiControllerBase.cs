@@ -1,5 +1,4 @@
 ﻿using FluentResults;
-using System.Collections.Generic;
 
 namespace eAgenda.WebApi.Controllers
 {

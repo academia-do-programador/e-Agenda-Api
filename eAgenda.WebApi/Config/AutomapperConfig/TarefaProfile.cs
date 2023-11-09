@@ -74,5 +74,5 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
                 }
             }
         }
-    }    
+    }
 }

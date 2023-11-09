@@ -57,15 +57,15 @@ namespace eAgenda.Dominio.ModuloCompromisso
         public DateTime Data { get { return _date.Date; } set { _date = value; } }
         public TimeSpan HoraInicio { get; set; }
         public TimeSpan HoraTermino { get; set; }
-        public Contato Contato 
-        { 
+        public Contato Contato
+        {
             get { return _contato; }
-            set 
+            set
             {
-                _contato = value; 
+                _contato = value;
 
                 if (_contato != null)
-                    ContatoId = _contato.Id; 
+                    ContatoId = _contato.Id;
             }
         }
 

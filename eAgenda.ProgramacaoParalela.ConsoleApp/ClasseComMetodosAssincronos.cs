@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace eAgenda.ProgramacaoParalela.ConsoleApp
+﻿namespace eAgenda.ProgramacaoParalela.ConsoleApp
 {
     internal class ClasseComMetodosAssincronos
     {

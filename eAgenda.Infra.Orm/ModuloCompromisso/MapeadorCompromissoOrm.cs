@@ -16,7 +16,7 @@ namespace eAgenda.Infra.Orm.ModuloCompromisso
             builder.Property(x => x.Link).HasColumnType("varchar(1000)").IsRequired(required: false);
             builder.Property(x => x.Data).IsRequired();
             builder.Property(x => x.HoraInicio).HasColumnType("bigint").IsRequired();
-            builder.Property(x => x.HoraTermino).HasColumnType("bigint").IsRequired();           
+            builder.Property(x => x.HoraTermino).HasColumnType("bigint").IsRequired();
 
             builder.HasOne(x => x.Contato)
                 .WithMany(x => x.Compromissos)

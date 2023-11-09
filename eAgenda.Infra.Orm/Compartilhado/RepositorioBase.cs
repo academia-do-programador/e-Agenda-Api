@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio;
 using eAgenda.Dominio.Compartilhado;
-using eAgenda.Dominio.ModuloDespesa;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,7 +16,7 @@ namespace eAgenda.Infra.Orm.Compartilhado
         public RepositorioBase(IContextoPersistencia contextoPersistencia)
         {
             dbContext = (eAgendaDbContext)contextoPersistencia;
-            registros = dbContext.Set<TEntity>();            
+            registros = dbContext.Set<TEntity>();
         }
 
         public virtual void Inserir(TEntity novoRegistro)

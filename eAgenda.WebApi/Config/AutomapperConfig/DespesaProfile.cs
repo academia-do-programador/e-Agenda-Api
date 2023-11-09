@@ -22,13 +22,13 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
             CreateMap<Despesa, VisualizarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()))
                 .ForMember(destino => destino.Categorias, opt => opt.MapFrom(origem => origem.Categorias.Select(x => x.Titulo)));
-            
+
         }
 
         private void EditarCategoriasMappingAction(EditarDespesaViewModel viewModel, Despesa despesa)
         {
             viewModel.CategoriasSelecionadas = despesa.Categorias.Select(categoria => categoria.Id).ToList();
-        }        
+        }
     }
 
     public class InserirCategoriasMappingAction : IMappingAction<InserirDespesaViewModel, Despesa>
