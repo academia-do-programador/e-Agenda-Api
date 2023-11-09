@@ -40,7 +40,7 @@ namespace eAgenda.WebApi.Controllers
             if (categoriaResult.IsFailed)
                 return NotFound(categoriaResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarCategoriaViewModel>(categoriaResult);
+            var viewModel = mapeador.Map<VisualizarCategoriaViewModel>(categoriaResult.Value);
 
             return Ok(viewModel);
         }

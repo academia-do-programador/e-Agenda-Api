@@ -1,4 +1,5 @@
 ﻿using FluentResults;
+using System.Collections.Generic;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -7,22 +8,14 @@ namespace eAgenda.WebApi.Controllers
         protected IActionResult ProcessarResultado(Result result, object viewModel = null)
         {
             if (result.IsFailed)
-                return BadRequest(new
-                {
-                    Sucesso = false,
-                    Erros = result.Errors.Select(x => x.Message)
-                });
+                return BadRequest(result.Errors);
 
-            return Ok(new
-            {
-                Sucesso = true,
-                Dados = viewModel
-            });
+            return this.Ok(viewModel);
         }
 
         public override OkObjectResult Ok(object? dados)
         {
-            return Ok(new
+            return base.Ok(new
             {
                 Sucesso = true,
                 Dados = dados
@@ -31,29 +24,23 @@ namespace eAgenda.WebApi.Controllers
 
         public override NotFoundObjectResult NotFound(object erros)
         {
-            List<IError> mensagensDeErro = erros as List<IError>;
+            IList<IError> errors = (List<IError>)erros;
 
-            if (mensagensDeErro == null)
-                throw new InvalidCastException(nameof(erros) + " não é uma lista de IError");
-
-            return NotFound(new
+            return base.NotFound(new
             {
                 Sucesso = false,
-                Erros = mensagensDeErro.Select(x => x.Message)
+                Erros = errors.Select(x => x.Message)
             });
         }
 
         public override BadRequestObjectResult BadRequest(object erros)
         {
-            List<IError> mensagensDeErro = erros as List<IError>;
+            IList<IError> errors = (List<IError>)erros;
 
-            if (mensagensDeErro == null)
-                throw new InvalidCastException(nameof(erros) + " não é uma lista de IError");
-
-            return BadRequest(new
+            return base.BadRequest(new
             {
                 Sucesso = false,
-                Erros = mensagensDeErro.Select(x => x.Message)
+                Erros = errors.Select(x => x.Message)
             });
         }
     }

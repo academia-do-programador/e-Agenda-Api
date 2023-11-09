@@ -64,7 +64,7 @@ namespace eAgenda.WebApi.Controllers
             if (despesaResult.IsFailed)
                 return NotFound(despesaResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarDespesaViewModel>(despesaResult);
+            var viewModel = mapeador.Map<VisualizarDespesaViewModel>(despesaResult.Value);
 
             return Ok(viewModel);
         }

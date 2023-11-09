@@ -42,7 +42,7 @@ namespace eAgenda.WebApi.Controllers
             if (tarefaResult.IsFailed)
                 return NotFound(tarefaResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarTarefaViewModel>(tarefaResult);
+            var viewModel = mapeador.Map<VisualizarTarefaViewModel>(tarefaResult.Value);
 
             return Ok(viewModel);
         }

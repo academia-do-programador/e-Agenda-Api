@@ -1,7 +1,12 @@
 using eAgenda.WebApi.Filters;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Text.Json.Serialization;
+using System.Text.Json;
 
 namespace eAgenda.WebApi
-{
+{    
+
+
     public class Program
     {
         public static void Main(string[] args)
@@ -10,7 +15,7 @@ namespace eAgenda.WebApi
 
             builder.Services.Configure<ApiBehaviorOptions>(config =>
             {
-                //config.SuppressModelStateInvalidFilter = true;
+                config.SuppressModelStateInvalidFilter = true;
             });
 
             builder.Services.ConfigurarSerilog(builder.Logging);
@@ -18,10 +23,7 @@ namespace eAgenda.WebApi
             builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
             builder.Services.ConfigurarSwagger();
 
-            builder.Services.AddControllers(config =>
-            {
-                config.Filters.Add<SerilogActionFilter>(); //filtros globais
-            });
+            builder.Services.AddControllers(config => { config.Filters.Add<SerilogActionFilter>(); });
 
             var app = builder.Build();
 

@@ -7,11 +7,13 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
     public class TarefaProfile : Profile
     {
 
-        private TarefaProfile()
+        public TarefaProfile()
         {
-            CreateMap<InserirTarefaViewModel, Tarefa>();
+            CreateMap<InserirTarefaViewModel, Tarefa>()
+                .ForMember(destino => destino.Itens, opt => opt.Ignore());
 
-            CreateMap<EditarTarefaViewModel, Tarefa>();
+            CreateMap<EditarTarefaViewModel, Tarefa>()
+                .ForMember(destino => destino.Itens, opt => opt.Ignore());
 
             CreateMap<Tarefa, ListarTarefaViewModel>()
                                .ForMember(destino => destino.Prioridade, opt => opt.MapFrom(origem => origem.Prioridade.GetDescription()))

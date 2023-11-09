@@ -42,7 +42,7 @@ namespace eAgenda.WebApi.Controllers
             if (compromissoResult.IsFailed)
                 return NotFound(compromissoResult.Errors);
 
-            var viewModel = mapeador.Map<VisualizarCompromissoViewModel>(compromissoResult);
+            var viewModel = mapeador.Map<VisualizarCompromissoViewModel>(compromissoResult.Value);
 
             return Ok(viewModel);
         }
@@ -97,7 +97,7 @@ namespace eAgenda.WebApi.Controllers
         }
 
 
-        [HttpGet("hoje/{dataAtual:datetime}")]
+        [HttpGet("hoje/{dataAtual}")]
         public async Task<IActionResult> SelecionarCompromissosDeHoje(DateTime dataAtual)
         {
             var compromissoResult = servicoCompromisso.SelecionarCompromissosFuturos(dataAtual, dataAtual);
@@ -107,7 +107,7 @@ namespace eAgenda.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("futuros/{dataInicial:datetime}={dataFinal:datetime}")]
+        [HttpGet("futuros/{dataInicial}={dataFinal}")]
         public async Task<IActionResult> SelecionarCompromissosFuturos(DateTime dataInicial, DateTime dataFinal)
         {
             var compromissoResult = servicoCompromisso.SelecionarCompromissosFuturos(dataInicial, dataFinal);
@@ -117,7 +117,7 @@ namespace eAgenda.WebApi.Controllers
             return Ok(viewModel);
         }
 
-        [HttpGet("passados/{dataAtual:datetime}")]
+        [HttpGet("passados/{dataAtual}")]
         public async Task<IActionResult> SelecionarCompromissosPassados(DateTime dataAtual)
         {
             var compromissoResult = servicoCompromisso.SelecionarCompromissosPassados(dataAtual);

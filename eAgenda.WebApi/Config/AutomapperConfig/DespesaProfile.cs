@@ -8,9 +8,11 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
     {
         public DespesaProfile()
         {
-            CreateMap<InserirDespesaViewModel, Despesa>();
+            CreateMap<InserirDespesaViewModel, Despesa>()
+                .ForMember(destino => destino.Categorias, opt => opt.Ignore());
 
-            CreateMap<EditarDespesaViewModel, Despesa>();
+            CreateMap<EditarDespesaViewModel, Despesa>()
+                .ForMember(destino => destino.Categorias, opt => opt.Ignore());
 
             CreateMap<Despesa, ListarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()));
@@ -18,6 +20,7 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
             CreateMap<Despesa, VisualizarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()))
                 .ForMember(destino => destino.Categorias, opt => opt.MapFrom(origem => origem.Categorias.Select(x => x.Titulo)));
+            
         }
     }
 }
