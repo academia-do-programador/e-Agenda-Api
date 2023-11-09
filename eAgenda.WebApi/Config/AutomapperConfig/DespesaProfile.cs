@@ -2,7 +2,7 @@
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApi.ViewModels.ModuloDespesa;
 
-namespace eAgenda.Webapi.Config.AutoMapperConfig
+namespace eAgenda.WebApi.Config.AutoMapperConfig
 {
     public class DespesaProfile : Profile
     {
@@ -18,6 +18,6 @@ namespace eAgenda.Webapi.Config.AutoMapperConfig
             CreateMap<Despesa, VisualizarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()))
                 .ForMember(destino => destino.Categorias, opt => opt.MapFrom(origem => origem.Categorias.Select(x => x.Titulo)));
-        }       
+        }
     }
 }

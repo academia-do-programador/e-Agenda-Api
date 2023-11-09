@@ -1,6 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 
-namespace eAgenda.Webapi.ViewModels.ModuloCompromisso
+namespace eAgenda.WebApi.ViewModels.ModuloCompromisso
 {
 
     public class EditarCompromissoViewModel

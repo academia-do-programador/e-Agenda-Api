@@ -1,6 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloContato;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace eAgenda.Dominio.Compartilhado
 {
@@ -15,5 +16,11 @@ namespace eAgenda.Dominio.Compartilhado
         List<T> SelecionarTodos();
 
         T SelecionarPorId(Guid numero);
+
+
+
+        Task<bool> InserirAsync(T novoRegistro);
+        Task<List<T>> SelecionarTodosAsync();
+        Task<T> SelecionarPorIdAsync(Guid numero);
     }
 }

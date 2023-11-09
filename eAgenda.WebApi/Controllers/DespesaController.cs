@@ -1,61 +1,122 @@
 ﻿using eAgenda.Aplicacao.ModuloDespesa;
+using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApi.ViewModels.ModuloDespesa;
-using Microsoft.AspNetCore.Authorization;
 
-namespace eAgenda.Webapi.Controllers
+namespace eAgenda.WebApi.Controllers
 {
     [Route("api/despesas")]
     [ApiController]
-    [Authorize]
-    public class DespesaController : ControllerBase
+    public class DespesaController : ApiControllerBase
     {
         private readonly ServicoDespesa servicoDespesa;
-        private readonly IMapper mapeadorDespesas;
+        private readonly IMapper mapeador;
 
         public DespesaController(ServicoDespesa servicoDespesa, IMapper mapeadorDespesas)
         {
             this.servicoDespesa = servicoDespesa;
-            this.mapeadorDespesas = mapeadorDespesas;
+            this.mapeador = mapeadorDespesas;
+        }
+
+        [HttpGet("ultimos-30-dias")]
+        [ProducesResponseType(typeof(ListarDespesaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarDespesasUltimos30Dias()
+        {
+            var despesaResult = servicoDespesa.SelecionarDespesasUltimos30Dias(DateTime.Now);
+
+            var viewModel = mapeador.Map<List<ListarDespesaViewModel>>(despesaResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("antigas")]
+        [ProducesResponseType(typeof(ListarDespesaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SelecionarDespesasAntigas()
+        {
+            var despesaResult = servicoDespesa.SelecionarDespesasAntigas(DateTime.Now);
+
+            var viewModel = mapeador.Map<List<ListarDespesaViewModel>>(despesaResult.Value);
+
+            return Ok(viewModel);
         }
 
         [HttpGet]
-        public void SelecionarTodos()
+        [ProducesResponseType(typeof(ListarDespesaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SeleciontarTodos()
         {
+            var despesaResult = servicoDespesa.SelecionarTodos();
+
+            var viewModel = mapeador.Map<List<ListarDespesaViewModel>>(despesaResult.Value);
+
+            return Ok(viewModel);
         }
 
-        [HttpGet, Route("ultimos-30-dias")]
-        public void SelecionarDespesasUltimos30Dias()
+        [HttpGet("visualizacao-completa/{id}")]
+        [ProducesResponseType(typeof(VisualizarDespesaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SeleciontarPorId(Guid id)
         {
-        }
+            var despesaResult = servicoDespesa.SelecionarPorId(id);
 
-        [HttpGet, Route("antigas")]
-        public void SelecionarDespesasAntigas()
-        {
-        }
+            if (despesaResult.IsFailed)
+                return NotFound(despesaResult.Errors);
 
-        [HttpGet("visualizacao-completa/{id:guid}")]
-        public void SelecionarDespesaCompletoPorId(Guid id)
-        {
-        }
+            var viewModel = mapeador.Map<VisualizarDespesaViewModel>(despesaResult);
 
-        [HttpGet("{id}")]
-        public void SelecionarDespesaPorId(Guid id)
-        {
+            return Ok(viewModel);
         }
 
         [HttpPost]
-        public void Inserir(InserirDespesaViewModel despesaVM)
+        [ProducesResponseType(typeof(InserirDespesaViewModel), 201)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Inserir(InserirDespesaViewModel despesaViewModel)
         {
+            var despesa = mapeador.Map<Despesa>(despesaViewModel);
+
+            var despesaResult = servicoDespesa.Inserir(despesa);
+
+            return ProcessarResultado(despesaResult.ToResult(), despesaViewModel);
         }
 
         [HttpPut("{id}")]
-        public void Editar(Guid id, EditarDespesaViewModel despesaVM)
+        [ProducesResponseType(typeof(EditarDespesaViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Editar(Guid id, EditarDespesaViewModel despesaViewModel)
         {
+            var resultadoSelecao = servicoDespesa.SelecionarPorId(id);
+
+            if (resultadoSelecao.IsFailed)
+                return NotFound(resultadoSelecao.Errors);
+
+            var despesa = mapeador.Map(despesaViewModel, resultadoSelecao.Value);
+
+            var despesaResult = servicoDespesa.Editar(despesa);
+
+            return ProcessarResultado(despesaResult.ToResult(), despesaViewModel);
         }
 
         [HttpDelete("{id}")]
-        public void Excluir(Guid id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Excluir(Guid id)
         {
+            var resultadoSelecao = servicoDespesa.SelecionarPorId(id);
+
+            if (resultadoSelecao.IsFailed)
+                return NotFound(resultadoSelecao.Errors);
+
+            var despesaResult = servicoDespesa.Excluir(resultadoSelecao.Value);
+
+            return ProcessarResultado(despesaResult);
         }
+
     }
 }

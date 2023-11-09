@@ -8,7 +8,7 @@ namespace eAgenda.WebApi.Filters
     {
         private object nomeEndpoint;
         private object nomeModulo;
-       
+
 
         public void OnActionExecuting(ActionExecutingContext context)
         {
@@ -43,8 +43,8 @@ namespace eAgenda.WebApi.Filters
 
             string nomeMetodoSeparado = "";
 
-            foreach (Match m in matches)            
-                nomeMetodoSeparado += m.Value + " ";            
+            foreach (Match m in matches)
+                nomeMetodoSeparado += m.Value + " ";
 
             return nomeMetodoSeparado;
         }

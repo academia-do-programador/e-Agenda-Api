@@ -31,7 +31,7 @@ namespace eAgenda.WebApi.Config
 
                 Log.Logger.Error(ex, ex.Message);
 
-                ctx.Response.WriteAsync( JsonSerializer.Serialize(problema) );
+                ctx.Response.WriteAsync(JsonSerializer.Serialize(problema));
             }
         }
     }

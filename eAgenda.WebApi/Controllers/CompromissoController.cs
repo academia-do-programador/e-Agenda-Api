@@ -1,66 +1,130 @@
 ﻿using eAgenda.Aplicacao.ModuloCompromisso;
-using eAgenda.Webapi.ViewModels.ModuloCompromisso;
+using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.WebApi.ViewModels.ModuloCompromisso;
 using Microsoft.AspNetCore.Authorization;
 
-namespace eAgenda.Webapi.Controllers
+namespace eAgenda.WebApi.Controllers
 {
     [Route("api/compromissos")]
     [ApiController]
-    [Authorize]
-    public class CompromissoController : ControllerBase
+    public class CompromissoController : ApiControllerBase
     {
         private readonly ServicoCompromisso servicoCompromisso;
-        private readonly IMapper mapeadorCompromissos;
+        private readonly IMapper mapeador;
 
         public CompromissoController(ServicoCompromisso servicoCompromisso, IMapper mapeadorCompromissos)
         {
             this.servicoCompromisso = servicoCompromisso;
-            this.mapeadorCompromissos = mapeadorCompromissos;
+            this.mapeador = mapeadorCompromissos;
         }
+
 
         [HttpGet]
-        public void SelecionarTodos()
+        [ProducesResponseType(typeof(ListarCompromissoViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SeleciontarTodos()
         {
+            var compromissoResult = servicoCompromisso.SelecionarTodos();
+
+            var viewModel = mapeador.Map<List<ListarCompromissoViewModel>>(compromissoResult.Value);
+
+            return Ok(viewModel);
         }
 
-        [HttpGet, Route("hoje/{dataAtual:datetime}")]
-        public void SelecionarCompromissosDeHoje(DateTime dataAtual)
+        [HttpGet("visualizacao-completa/{id}")]
+        [ProducesResponseType(typeof(VisualizarCompromissoViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> SeleciontarPorId(Guid id)
         {
-        }
+            var compromissoResult = servicoCompromisso.SelecionarPorId(id);
 
-        [HttpGet, Route("futuros/{dataInicial:datetime}={dataFinal:datetime}")]
-        public void SelecionarCompromissosFuturos(DateTime dataInicial, DateTime dataFinal)
-        {
-        }
+            if (compromissoResult.IsFailed)
+                return NotFound(compromissoResult.Errors);
 
-        [HttpGet, Route("passados/{dataAtual:datetime}")]
-        public void SelecionarCompromissosPassados(DateTime dataAtual)
-        {
-        }
+            var viewModel = mapeador.Map<VisualizarCompromissoViewModel>(compromissoResult);
 
-        [HttpGet("visualizacao-completa/{id:guid}")]
-        public void SelecionarCompromissoCompletoPorId(Guid id)
-        {
-        }
-
-        [HttpGet("{id}")]
-        public void SelecionarCompromissoPorId(Guid id)
-        {
+            return Ok(viewModel);
         }
 
         [HttpPost]
-        public void Inserir(InserirCompromissoViewModel compromissoVM)
+        [ProducesResponseType(typeof(InserirCompromissoViewModel), 201)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Inserir(InserirCompromissoViewModel compromissoViewModel)
         {
+            var compromisso = mapeador.Map<Compromisso>(compromissoViewModel);
+
+            var compromissoResult = servicoCompromisso.Inserir(compromisso);
+
+            return ProcessarResultado(compromissoResult.ToResult(), compromissoViewModel);
         }
 
         [HttpPut("{id}")]
-        public void Editar(Guid id, EditarCompromissoViewModel compromissoVM)
+        [ProducesResponseType(typeof(EditarCompromissoViewModel), 200)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Editar(Guid id, EditarCompromissoViewModel compromissoViewModel)
         {
+            var resultadoSelecao = servicoCompromisso.SelecionarPorId(id);
+
+            if (resultadoSelecao.IsFailed)
+                return NotFound(resultadoSelecao.Errors);
+
+            var compromisso = mapeador.Map(compromissoViewModel, resultadoSelecao.Value);
+
+            var compromissoResult = servicoCompromisso.Editar(compromisso);
+
+            return ProcessarResultado(compromissoResult.ToResult(), compromissoViewModel);
         }
 
         [HttpDelete("{id}")]
-        public void Excluir(Guid id)
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(string[]), 400)]
+        [ProducesResponseType(typeof(string[]), 404)]
+        [ProducesResponseType(typeof(string[]), 500)]
+        public async Task<IActionResult> Excluir(Guid id)
         {
+            var resultadoSelecao = servicoCompromisso.SelecionarPorId(id);
+
+            if (resultadoSelecao.IsFailed)
+                return NotFound(resultadoSelecao.Errors);
+
+            var compromissoResult = servicoCompromisso.Excluir(resultadoSelecao.Value);
+
+            return ProcessarResultado(compromissoResult);
+        }
+
+
+        [HttpGet("hoje/{dataAtual:datetime}")]
+        public async Task<IActionResult> SelecionarCompromissosDeHoje(DateTime dataAtual)
+        {
+            var compromissoResult = servicoCompromisso.SelecionarCompromissosFuturos(dataAtual, dataAtual);
+
+            var viewModel = mapeador.Map<List<ListarCompromissoViewModel>>(compromissoResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("futuros/{dataInicial:datetime}={dataFinal:datetime}")]
+        public async Task<IActionResult> SelecionarCompromissosFuturos(DateTime dataInicial, DateTime dataFinal)
+        {
+            var compromissoResult = servicoCompromisso.SelecionarCompromissosFuturos(dataInicial, dataFinal);
+
+            var viewModel = mapeador.Map<List<ListarCompromissoViewModel>>(compromissoResult.Value);
+
+            return Ok(viewModel);
+        }
+
+        [HttpGet("passados/{dataAtual:datetime}")]
+        public async Task<IActionResult> SelecionarCompromissosPassados(DateTime dataAtual)
+        {
+            var compromissoResult = servicoCompromisso.SelecionarCompromissosPassados(dataAtual);
+
+            var viewModel = mapeador.Map<List<ListarCompromissoViewModel>>(compromissoResult.Value);
+
+            return Ok(viewModel);
         }
     }
 }

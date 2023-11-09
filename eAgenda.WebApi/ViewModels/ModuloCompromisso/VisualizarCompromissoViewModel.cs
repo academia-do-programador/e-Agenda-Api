@@ -1,7 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloContato;
 
-namespace eAgenda.Webapi.ViewModels.ModuloCompromisso
+namespace eAgenda.WebApi.ViewModels.ModuloCompromisso
 {
     public class VisualizarCompromissoViewModel
     {

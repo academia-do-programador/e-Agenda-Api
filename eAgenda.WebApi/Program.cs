@@ -1,5 +1,4 @@
 using eAgenda.WebApi.Filters;
-using Serilog;
 
 namespace eAgenda.WebApi
 {
@@ -11,7 +10,7 @@ namespace eAgenda.WebApi
 
             builder.Services.Configure<ApiBehaviorOptions>(config =>
             {
-                config.SuppressModelStateInvalidFilter = true;
+                //config.SuppressModelStateInvalidFilter = true;
             });
 
             builder.Services.ConfigurarSerilog(builder.Logging);

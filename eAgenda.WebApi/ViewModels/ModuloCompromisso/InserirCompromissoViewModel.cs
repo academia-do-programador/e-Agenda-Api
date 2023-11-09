@@ -1,10 +1,9 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 
-namespace eAgenda.Webapi.ViewModels.ModuloCompromisso
+namespace eAgenda.WebApi.ViewModels.ModuloCompromisso
 {
     public class InserirCompromissoViewModel
     {
-        public Guid Id { get; set; }
         public string Assunto { get; set; }
 
         public string Local { get; set; }

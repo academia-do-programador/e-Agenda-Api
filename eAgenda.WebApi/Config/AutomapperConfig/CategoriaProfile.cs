@@ -1,7 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApi.ViewModels.ModuloDespesa;
 
-namespace eAgenda.Webapi.Config.AutoMapperConfig
+namespace eAgenda.WebApi.Config.AutoMapperConfig
 {
     public class CategoriaProfile : Profile
     {

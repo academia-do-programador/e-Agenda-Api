@@ -1,5 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
-using eAgenda.Webapi.ViewModels.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloCompromisso;
 
 namespace eAgenda.WebApi.Config.AutomapperConfig

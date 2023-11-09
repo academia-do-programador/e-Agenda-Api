@@ -2,6 +2,6 @@
 {
     public class EditarContatoViewModel : FormsContatoViewModel
     {
-      
+
     }
 }

@@ -46,6 +46,18 @@ namespace eAgenda.Infra.Orm.Compartilhado
             return registros.ToList();
         }
 
+        public virtual async Task<bool> InserirAsync(TEntity novoRegistro)
+        {
+            await registros.AddAsync(novoRegistro);
+            return true;
+        }
+
+        public virtual async Task<TEntity> SelecionarPorIdAsync(Guid id)
+        {
+            return await registros
+                .SingleOrDefaultAsync(x => x.Id == id);
+        }
+
         public virtual async Task<List<TEntity>> SelecionarTodosAsync()
         {
             return await registros.ToListAsync();

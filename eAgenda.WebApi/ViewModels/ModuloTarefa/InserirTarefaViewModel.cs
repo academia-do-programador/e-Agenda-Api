@@ -1,6 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
 
-namespace eAgenda.Webapi.ViewModels.ModuloTarefa
+namespace eAgenda.WebApi.ViewModels.ModuloTarefa
 {
 
     public class InserirTarefaViewModel

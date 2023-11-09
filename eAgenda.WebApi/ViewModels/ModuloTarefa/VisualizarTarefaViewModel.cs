@@ -1,4 +1,4 @@
-﻿namespace eAgenda.Webapi.ViewModels.ModuloTarefa
+﻿namespace eAgenda.WebApi.ViewModels.ModuloTarefa
 {
     public class VisualizarTarefaViewModel
     {

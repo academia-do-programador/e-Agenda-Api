@@ -1,8 +1,8 @@
 ﻿using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloTarefa;
-using eAgenda.Webapi.ViewModels.ModuloTarefa;
+using eAgenda.WebApi.ViewModels.ModuloTarefa;
 
-namespace eAgenda.Webapi.Config.AutoMapperConfig
+namespace eAgenda.WebApi.Config.AutoMapperConfig
 {
     public class TarefaProfile : Profile
     {
@@ -32,6 +32,6 @@ namespace eAgenda.Webapi.Config.AutoMapperConfig
 
 
             CreateMap<ItemTarefa, ItemTarefaViewModel>();
-        }       
+        }
     }
 }

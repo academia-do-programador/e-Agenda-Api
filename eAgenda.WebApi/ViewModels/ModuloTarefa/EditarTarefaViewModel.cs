@@ -1,11 +1,9 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
 
-namespace eAgenda.Webapi.ViewModels.ModuloTarefa
+namespace eAgenda.WebApi.ViewModels.ModuloTarefa
 {
     public class EditarTarefaViewModel
     {
-        public Guid Id { get; set; }
-
         public string Titulo { get; set; }
 
         public PrioridadeTarefaEnum Prioridade { get; set; }
