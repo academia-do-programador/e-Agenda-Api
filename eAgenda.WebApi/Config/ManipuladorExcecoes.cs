@@ -3,7 +3,7 @@ using System.Text.Json;
 
 namespace eAgenda.WebApi.Config
 {
-    public class ManipuladorExcecoes
+    public class ManipuladorExcecoes 
     {
         private readonly RequestDelegate requestDelegate;
 
@@ -31,8 +31,9 @@ namespace eAgenda.WebApi.Config
 
                 Log.Logger.Error(ex, ex.Message);
 
-                ctx.Response.WriteAsync(JsonSerializer.Serialize(problema));
+                await ctx.Response.WriteAsync(JsonSerializer.Serialize(problema));
             }
         }
+
     }
 }
