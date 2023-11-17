@@ -20,6 +20,12 @@ namespace eAgenda.Infra.Orm.ModuloTarefa
                 .WithOne(x => x.Tarefa)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasOne(x => x.Usuario)
+              .WithMany()
+              .IsRequired()
+              .HasForeignKey(x => x.UsuarioId)
+              .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

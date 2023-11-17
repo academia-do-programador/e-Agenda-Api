@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.Compartilhado;
+using eAgenda.Dominio.ModuloAutenticacao;
 using System;
 using System.Collections.Generic;
 
@@ -9,7 +10,7 @@ namespace eAgenda.Dominio.ModuloDespesa
         public Despesa()
         {
             Data = DateTime.Now;
-            Categorias = new List<Categoria>();
+            Categorias = new List<Categoria>();            
         }
 
         public string Descricao { get; set; }
@@ -21,6 +22,7 @@ namespace eAgenda.Dominio.ModuloDespesa
         public FormaPgtoDespesaEnum FormaPagamento { get; set; }
 
         public List<Categoria> Categorias { get; set; }
+      
 
         public override void Atualizar(Despesa registro)
         {

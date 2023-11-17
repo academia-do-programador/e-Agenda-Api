@@ -13,6 +13,12 @@ namespace eAgenda.Infra.Orm.ModuloDespesa
             builder.Property(x => x.Titulo).HasColumnType("varchar(200)").IsRequired();
 
             builder.HasMany(x => x.Despesas);
+
+            builder.HasOne(x => x.Usuario)
+              .WithMany()
+              .IsRequired()
+              .HasForeignKey(x => x.UsuarioId)
+              .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

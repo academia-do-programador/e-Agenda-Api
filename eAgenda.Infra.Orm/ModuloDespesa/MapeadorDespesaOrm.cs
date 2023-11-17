@@ -20,6 +20,12 @@ namespace eAgenda.Infra.Orm.ModuloDespesa
                 .UsingEntity(x =>
                     x.ToTable("TBDespesa_TBCategoria")
                 );
+
+            builder.HasOne(x => x.Usuario)
+              .WithMany()
+              .IsRequired()
+              .HasForeignKey(x => x.UsuarioId)
+              .OnDelete(DeleteBehavior.NoAction);
         }
     }
 }

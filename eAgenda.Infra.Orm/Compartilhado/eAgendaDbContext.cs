@@ -1,4 +1,7 @@
 ﻿using eAgenda.Dominio;
+using eAgenda.Dominio.ModuloAutenticacao;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
@@ -10,7 +13,8 @@ using System.Threading.Tasks;
 
 namespace eAgenda.Infra.Orm
 {
-    public class eAgendaDbContext : DbContext, IContextoPersistencia
+    public class eAgendaDbContext : 
+        IdentityDbContext<Usuario, IdentityRole<Guid>, Guid>, IContextoPersistencia
     {
 
         public eAgendaDbContext(DbContextOptions options) : base(options)
