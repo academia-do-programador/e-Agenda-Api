@@ -17,7 +17,7 @@ namespace eAgenda.WebApi.Controllers
             this.mapeador = mapeador;
         }
 
-        [HttpPost]
+        [HttpPost("registrar")]
         public async Task<IActionResult> Registrar(RegistrarUsuarioViewModel viewModel)
         {
             var usuario = mapeador.Map<Usuario>(viewModel);
@@ -25,6 +25,22 @@ namespace eAgenda.WebApi.Controllers
             var usuarioResult = await servicoAutenticacao.RegistrarAsync(usuario, viewModel.Senha);
 
             return ProcessarResultado(usuarioResult.ToResult(), viewModel);            
+        }
+
+        [HttpPost("autenticar")]
+        public async Task<IActionResult> Autenticar(AutenticarUsuarioViewModel viewModel)
+        {
+            var usuarioResult = await servicoAutenticacao.Autenticar(viewModel.Login, viewModel.Senha);
+
+            return ProcessarResultado(usuarioResult.ToResult(), viewModel);
+        }
+
+        [HttpPost("sair")]
+        public async Task<IActionResult> Sair()
+        {
+            await servicoAutenticacao.Sair();
+
+            return Ok();
         }
     }
 }

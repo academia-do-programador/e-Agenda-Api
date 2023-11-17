@@ -184,10 +184,13 @@ namespace eAgenda.WebApi
             builder.Services.AddTransient<ServicoAutenticacao>();
             builder.Services.AddTransient<UserManager<Usuario>>();
 
-            builder.Services.AddIdentity<Usuario, IdentityRole<Guid>>()
-                .AddEntityFrameworkStores<eAgendaDbContext>()
-                .AddDefaultTokenProviders()
-                .AddErrorDescriber<eAgendaIdentityErrorDescriber>();
+            builder.Services.AddIdentity<Usuario, IdentityRole<Guid>>( options =>
+            {
+                options.User.RequireUniqueEmail = true;                
+            })
+            .AddEntityFrameworkStores<eAgendaDbContext>()
+            .AddDefaultTokenProviders()
+            .AddErrorDescriber<eAgendaIdentityErrorDescriber>();
 
             builder.Services.ConfigurarSerilog(builder.Logging);
             builder.Services.ConfigurarAutoMapper();
