@@ -9,6 +9,7 @@ namespace eAgenda.Dominio.ModuloAutenticacao
         public Usuario()
         {
             Id = SequentialGuid.NewGuid();
+            EmailConfirmed = true;
         }
 
         public string Nome { get; set; }

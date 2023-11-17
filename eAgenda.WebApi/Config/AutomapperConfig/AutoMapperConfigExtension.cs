@@ -13,6 +13,7 @@ namespace eAgenda.WebApi.Config.AutomapperConfig
                 opt.AddProfile<CategoriaProfile>();
                 opt.AddProfile<DespesaProfile>();
                 opt.AddProfile<TarefaProfile>();
+                opt.AddProfile<UsuarioProfile>();
             });
         }
     }
