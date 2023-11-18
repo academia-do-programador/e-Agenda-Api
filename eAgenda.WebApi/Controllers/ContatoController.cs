@@ -1,11 +1,13 @@
 ﻿using eAgenda.Aplicacao.ModuloContato;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApi.ViewModels.ModuloContato;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eAgenda.WebApi.Controllers
 {
     [ApiController]
     [Route("api/contatos")]
+    [Authorize]
     public class ContatoController : ApiControllerBase
     {
         private ServicoContato servicoContato;

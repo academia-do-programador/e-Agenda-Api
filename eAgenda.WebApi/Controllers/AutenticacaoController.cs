@@ -24,7 +24,12 @@ namespace eAgenda.WebApi.Controllers
             
             var usuarioResult = await servicoAutenticacao.RegistrarAsync(usuario, viewModel.Senha);
 
-            return ProcessarResultado(usuarioResult.ToResult(), viewModel);            
+            if (usuarioResult.IsFailed)
+                return BadRequest(usuarioResult.Errors);
+
+            var tokenViewModel = usuario.GerarJwt(DateTime.Now.AddDays(5));
+
+            return Ok(tokenViewModel);
         }
 
         [HttpPost("autenticar")]
@@ -32,7 +37,14 @@ namespace eAgenda.WebApi.Controllers
         {
             var usuarioResult = await servicoAutenticacao.Autenticar(viewModel.Login, viewModel.Senha);
 
-            return ProcessarResultado(usuarioResult.ToResult(), viewModel);
+            if (usuarioResult.IsFailed)
+                return BadRequest(usuarioResult.Errors);
+
+            var usuario = usuarioResult.Value;
+
+            var tokenViewModel = usuario.GerarJwt(DateTime.Now.AddDays(5));
+
+            return Ok(tokenViewModel);
         }
 
         [HttpPost("sair")]
@@ -42,5 +54,8 @@ namespace eAgenda.WebApi.Controllers
 
             return Ok();
         }
+
+        
+
     }
 }
