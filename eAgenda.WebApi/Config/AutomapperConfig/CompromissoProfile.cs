@@ -14,7 +14,9 @@ namespace eAgenda.WebApi.Config.AutomapperConfig
 
         private void ConfigurarMapeamentoViewModelParaEntidade()
         {
-            CreateMap<InserirCompromissoViewModel, Compromisso>();
+            CreateMap<InserirCompromissoViewModel, Compromisso>()
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>());
+
             CreateMap<EditarCompromissoViewModel, Compromisso>();
         }
 

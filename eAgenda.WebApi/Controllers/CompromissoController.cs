@@ -1,6 +1,7 @@
 ﻿using eAgenda.Aplicacao.ModuloCompromisso;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloCompromisso;
+using System.Security.Claims;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -53,6 +54,8 @@ namespace eAgenda.WebApi.Controllers
         public async Task<IActionResult> Inserir(InserirCompromissoViewModel compromissoViewModel)
         {
             var compromisso = mapeador.Map<Compromisso>(compromissoViewModel);
+
+            compromisso.UsuarioId = ObterUsuarioId();
 
             var compromissoResult = servicoCompromisso.Inserir(compromisso);
 
@@ -124,6 +127,11 @@ namespace eAgenda.WebApi.Controllers
             var viewModel = mapeador.Map<List<ListarCompromissoViewModel>>(compromissoResult.Value);
 
             return Ok(viewModel);
+        }
+
+        private Guid ObterUsuarioId()
+        {
+            return Guid.Parse(Request.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
         }
     }
 }

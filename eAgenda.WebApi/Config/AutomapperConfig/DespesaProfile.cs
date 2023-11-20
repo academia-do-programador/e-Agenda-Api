@@ -10,6 +10,7 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
         {
             CreateMap<InserirDespesaViewModel, Despesa>()
                 .ForMember(destino => destino.Categorias, opt => opt.Ignore())
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>())
                 .AfterMap<InserirCategoriasMappingAction>();
 
             CreateMap<EditarDespesaViewModel, Despesa>()

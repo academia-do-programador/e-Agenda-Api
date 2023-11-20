@@ -17,6 +17,7 @@ namespace eAgenda.WebApi.Controllers
             this.mapeador = mapeador;
         }
 
+
         [HttpPost("registrar")]
         public async Task<IActionResult> Registrar(RegistrarUsuarioViewModel viewModel)
         {

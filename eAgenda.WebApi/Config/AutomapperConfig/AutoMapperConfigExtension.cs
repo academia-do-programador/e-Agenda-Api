@@ -15,6 +15,8 @@ namespace eAgenda.WebApi.Config.AutomapperConfig
                 opt.AddProfile<TarefaProfile>();
                 opt.AddProfile<UsuarioProfile>();
             });
+
+            services.AddTransient<UsuarioResolver>();
         }
     }
 }

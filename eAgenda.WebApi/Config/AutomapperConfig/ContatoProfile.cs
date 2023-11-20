@@ -10,7 +10,9 @@ namespace eAgenda.WebApi.Config.AutomapperConfig
             CreateMap<Contato, ListarContatoViewModel>();
             CreateMap<Contato, VisualizarContatoViewModel>();
 
-            CreateMap<InserirContatoViewModel, Contato>();
+            CreateMap<InserirContatoViewModel, Contato>()
+                .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>());
+
             CreateMap<EditarContatoViewModel, Contato>();
         }
     }

@@ -2,7 +2,7 @@
 
 namespace eAgenda.WebApi.ViewModels.ModuloCompromisso
 {
-    public class InserirCompromissoViewModel
+    public class InserirCompromissoViewModel : Object
     {
         public string Assunto { get; set; }
 
