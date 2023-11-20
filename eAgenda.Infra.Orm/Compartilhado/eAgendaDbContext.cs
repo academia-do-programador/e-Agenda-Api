@@ -1,5 +1,10 @@
 ﻿using eAgenda.Dominio;
+using eAgenda.Dominio.Compartilhado;
 using eAgenda.Dominio.ModuloAutenticacao;
+using eAgenda.Dominio.ModuloCompromisso;
+using eAgenda.Dominio.ModuloContato;
+using eAgenda.Dominio.ModuloDespesa;
+using eAgenda.Dominio.ModuloTarefa;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -16,9 +21,12 @@ namespace eAgenda.Infra.Orm
     public class eAgendaDbContext : 
         IdentityDbContext<Usuario, IdentityRole<Guid>, Guid>, IContextoPersistencia
     {
+        private Guid usuarioId;
 
-        public eAgendaDbContext(DbContextOptions options) : base(options)
+        public eAgendaDbContext(DbContextOptions options, ITenantProvider tenantProvider = null) : base(options)
         {
+            if (tenantProvider != null)
+                usuarioId = tenantProvider.UsuarioId;
         }
 
         public void GravarDados()
@@ -82,6 +90,12 @@ namespace eAgenda.Infra.Orm
             Assembly dllComConfiguracoesOrm = tipo.Assembly;
 
             modelBuilder.ApplyConfigurationsFromAssembly(dllComConfiguracoesOrm);
+
+            modelBuilder.Entity<Contato>().HasQueryFilter(x => x.UsuarioId == usuarioId);
+            modelBuilder.Entity<Compromisso>().HasQueryFilter(x => x.UsuarioId == usuarioId);
+            modelBuilder.Entity<Despesa>().HasQueryFilter(x => x.UsuarioId == usuarioId);
+            modelBuilder.Entity<Categoria>().HasQueryFilter(x => x.UsuarioId == usuarioId);
+            modelBuilder.Entity<Tarefa>().HasQueryFilter(x => x.UsuarioId == usuarioId);
 
             base.OnModelCreating(modelBuilder);
         }

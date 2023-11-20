@@ -1,12 +1,14 @@
 ﻿using eAgenda.Aplicacao.ModuloCompromisso;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.WebApi.ViewModels.ModuloCompromisso;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 
 namespace eAgenda.WebApi.Controllers
 {
     [Route("api/compromissos")]
     [ApiController]
+    [Authorize]
     public class CompromissoController : ApiControllerBase
     {
         private readonly ServicoCompromisso servicoCompromisso;

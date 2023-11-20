@@ -1,11 +1,13 @@
 ﻿using eAgenda.Aplicacao.ModuloTarefa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.WebApi.ViewModels.ModuloTarefa;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eAgenda.WebApi.Controllers
 {
     [Route("api/tarefas")]
     [ApiController]
+    [Authorize]
     public class TarefaController : ApiControllerBase
     {
         private readonly ServicoTarefa servicoTarefa;
