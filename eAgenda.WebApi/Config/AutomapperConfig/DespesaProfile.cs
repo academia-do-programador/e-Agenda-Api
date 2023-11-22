@@ -8,14 +8,10 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
     {
         public DespesaProfile()
         {
-            CreateMap<InserirDespesaViewModel, Despesa>()
+            CreateMap<FormsDespesaViewModel, Despesa>()
                 .ForMember(destino => destino.Categorias, opt => opt.Ignore())
                 .ForMember(dest => dest.UsuarioId, opt => opt.MapFrom<UsuarioResolver>())
-                .AfterMap<InserirCategoriasMappingAction>();
-
-            CreateMap<EditarDespesaViewModel, Despesa>()
-                .ForMember(destino => destino.Categorias, opt => opt.Ignore())
-                .AfterMap(EditarCategoriasMappingAction);
+                .AfterMap<FormsDespesaMappingAction>();            
 
             CreateMap<Despesa, ListarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()));
@@ -23,25 +19,19 @@ namespace eAgenda.WebApi.Config.AutoMapperConfig
             CreateMap<Despesa, VisualizarDespesaViewModel>()
                 .ForMember(destino => destino.FormaPagamento, opt => opt.MapFrom(origem => origem.FormaPagamento.GetDescription()))
                 .ForMember(destino => destino.Categorias, opt => opt.MapFrom(origem => origem.Categorias.Select(x => x.Titulo)));
-
-        }
-
-        private void EditarCategoriasMappingAction(EditarDespesaViewModel viewModel, Despesa despesa)
-        {
-            viewModel.CategoriasSelecionadas = despesa.Categorias.Select(categoria => categoria.Id).ToList();
         }
     }
 
-    public class InserirCategoriasMappingAction : IMappingAction<InserirDespesaViewModel, Despesa>
+    public class FormsDespesaMappingAction : IMappingAction<FormsDespesaViewModel, Despesa>
     {
         private readonly IRepositorioCategoria repositorioCategoria;
 
-        public InserirCategoriasMappingAction(IRepositorioCategoria repositorioCategoria)
+        public FormsDespesaMappingAction(IRepositorioCategoria repositorioCategoria)
         {
             this.repositorioCategoria = repositorioCategoria;
         }
 
-        public void Process(InserirDespesaViewModel source, Despesa destination, ResolutionContext context)
+        public void Process(FormsDespesaViewModel source, Despesa destination, ResolutionContext context)
         {
             destination.Categorias = repositorioCategoria.SelecionarMuitos(source.CategoriasSelecionadas);
         }

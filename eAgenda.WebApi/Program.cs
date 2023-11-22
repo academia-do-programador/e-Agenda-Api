@@ -1,7 +1,11 @@
+using eAgenda.WebApi.Config;
+
 namespace eAgenda.WebApi
 {
     public class Program
     {
+        static string nomeCors = "Desenvolvimento";
+
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
@@ -14,12 +18,12 @@ namespace eAgenda.WebApi
             builder.Services.ConfigurarSwagger();
             builder.Services.ConfigurarControllers();
             builder.Services.ConfigurarJwt();
+            builder.Services.ConfigurarCors(nomeCors);
 
             var app = builder.Build();
 
             app.UseMiddleware<ManipuladorExcecoes>();
 
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -27,6 +31,8 @@ namespace eAgenda.WebApi
             }
 
             app.UseHttpsRedirection();
+
+            app.UseCors(nomeCors);
 
             app.UseAuthentication();
 

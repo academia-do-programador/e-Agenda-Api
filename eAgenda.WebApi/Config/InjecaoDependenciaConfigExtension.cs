@@ -45,7 +45,7 @@ namespace eAgenda.WebApi.Config
             services.AddScoped<IRepositorioTarefa, RepositorioTarefaOrm>();
             services.AddTransient<ServicoTarefa>();
 
-            services.AddTransient<InserirCategoriasMappingAction>();
+            services.AddTransient<FormsDespesaMappingAction>();
 
         }
     }
