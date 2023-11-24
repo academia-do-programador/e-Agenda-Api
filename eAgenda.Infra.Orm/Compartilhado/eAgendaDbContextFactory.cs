@@ -1,6 +1,8 @@
 ﻿using eAgenda.Infra.Orm;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace GeradorTestes.Infra.Orm
 {
@@ -10,7 +12,14 @@ namespace GeradorTestes.Infra.Orm
         {
             var builder = new DbContextOptionsBuilder<eAgendaDbContext>();
 
-            builder.UseSqlServer(@"Data Source=(LOCALDB)\MSSQLLOCALDB;Initial Catalog=eAgenda;Integrated Security=True");
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            string connectionString = configuration.GetConnectionString("PostgreSql");
+
+            builder.UseNpgsql(connectionString);
 
             return new eAgendaDbContext(builder.Options);
         }
