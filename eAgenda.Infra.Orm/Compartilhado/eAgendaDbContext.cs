@@ -8,7 +8,6 @@ using eAgenda.Dominio.ModuloTarefa;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using System;
@@ -18,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace eAgenda.Infra.Orm
 {
-    public class eAgendaDbContext : 
+    public class eAgendaDbContext :
         IdentityDbContext<Usuario, IdentityRole<Guid>, Guid>, IContextoPersistencia
     {
         private Guid usuarioId;

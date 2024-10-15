@@ -2,7 +2,6 @@
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.WebApi.ViewModels.ModuloContato;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
 
 namespace eAgenda.WebApi.Controllers
 {
@@ -54,13 +53,13 @@ namespace eAgenda.WebApi.Controllers
         [ProducesResponseType(typeof(string[]), 500)]
         public async Task<IActionResult> Inserir(InserirContatoViewModel contatoViewModel)
         {
-            var contato = mapeador.Map<Contato>(contatoViewModel);                       
+            var contato = mapeador.Map<Contato>(contatoViewModel);
 
             var contatoResult = await servicoContato.InserirAsync(contato);
 
             return ProcessarResultado(contatoResult.ToResult(), contatoViewModel);
         }
-       
+
 
         [HttpPut("{id}")]
         [ProducesResponseType(typeof(EditarContatoViewModel), 200)]
@@ -114,6 +113,6 @@ namespace eAgenda.WebApi.Controllers
             return ProcessarResultado(contatoResult.ToResult());
         }
 
-        
+
     }
 }

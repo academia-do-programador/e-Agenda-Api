@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
-namespace eAgenda.Infra.Orm
+namespace eAgenda.Infra.Orm.Compartilhado
 {
-    public static class MigradorBancoDadoseAgenda
+    public static class MigradorBancoDados
     {
         public static bool AtualizarBancoDados(DbContext db)
         {
