@@ -8,7 +8,7 @@ namespace eAgenda.WebApi.Config
     {
         public static void ConfigurarJwt(this IServiceCollection services)
         {
-            var key = Encoding.ASCII.GetBytes("SegredoSuperSecretoDoeAgenda");
+            var key = Encoding.ASCII.GetBytes("07xiA716eLITq7smiUueBD0QpqcTcR8V");
 
             services.AddAuthentication(x =>
             {
@@ -25,7 +25,10 @@ namespace eAgenda.WebApi.Config
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidAudience = "http://localhost",
-                    ValidIssuer = "eAgenda"
+                    ValidIssuer = "eAgenda",
+                    ValidateAudience = true,
+                    ValidateIssuer = true,
+                    ValidateLifetime = true
                 };
             });
         }

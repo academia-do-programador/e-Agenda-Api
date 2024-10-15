@@ -32,7 +32,8 @@ namespace eAgenda.WebApi.Config
         private static string CriarChaveToken(Usuario usuario, DateTime dataExpiracao)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var segredo = Encoding.ASCII.GetBytes("SegredoSuperSecretoDoeAgenda");
+
+            var segredo = Encoding.ASCII.GetBytes("07xiA716eLITq7smiUueBD0QpqcTcR8V");
 
             var token = tokenHandler.CreateToken(new SecurityTokenDescriptor
             {
