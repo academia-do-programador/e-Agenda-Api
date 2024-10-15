@@ -4,7 +4,7 @@ using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace eAgenda.Aplicacao
+namespace eAgenda.Aplicacao.Compartilhado
 {
     public abstract class ServicoBase<TDominio, TValidador> where TValidador : AbstractValidator<TDominio>, new()
     {

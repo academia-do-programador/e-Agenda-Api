@@ -11,11 +11,11 @@ namespace eAgenda.Infra.Orm.Compartilhado
     public abstract class RepositorioBase<TEntity> where TEntity : EntidadeBase<TEntity>
     {
         protected DbSet<TEntity> registros;
-        private readonly eAgendaDbContext dbContext;
+        private readonly EAgendaDbContext dbContext;
 
         public RepositorioBase(IContextoPersistencia contextoPersistencia)
         {
-            dbContext = (eAgendaDbContext)contextoPersistencia;
+            dbContext = (EAgendaDbContext)contextoPersistencia;
             registros = dbContext.Set<TEntity>();
         }
 

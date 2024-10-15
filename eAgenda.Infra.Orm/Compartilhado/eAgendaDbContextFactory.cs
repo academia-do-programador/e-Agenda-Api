@@ -1,27 +1,26 @@
-﻿using eAgenda.Infra.Orm;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
-namespace GeradorTestes.Infra.Orm
+namespace eAgenda.Infra.Orm.Compartilhado
 {
-    public class eAgendaDbContextFactory : IDesignTimeDbContextFactory<eAgendaDbContext>
+    public class eAgendaDbContextFactory : IDesignTimeDbContextFactory<EAgendaDbContext>
     {
-        public eAgendaDbContext CreateDbContext(string[] args)
+        public EAgendaDbContext CreateDbContext(string[] args)
         {
-            var builder = new DbContextOptionsBuilder<eAgendaDbContext>();
+            var builder = new DbContextOptionsBuilder<EAgendaDbContext>();
 
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            string connectionString = configuration.GetConnectionString("PostgreSql");
+            string connectionString = configuration.GetConnectionString("SqlServer");
 
-            builder.UseNpgsql(connectionString);
+            builder.UseSqlServer(connectionString);
 
-            return new eAgendaDbContext(builder.Options);
+            return new EAgendaDbContext(builder.Options);
         }
     }
 }

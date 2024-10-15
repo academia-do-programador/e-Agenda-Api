@@ -16,7 +16,7 @@ namespace eAgenda.WebApi.Config
         {
             get
             {
-                var claimId = contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+                var claimId = contextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier);
 
                 if (claimId == null)
                     return Guid.Empty;

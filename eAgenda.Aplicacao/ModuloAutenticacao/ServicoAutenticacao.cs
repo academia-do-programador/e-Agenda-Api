@@ -1,4 +1,5 @@
-﻿using eAgenda.Dominio.ModuloAutenticacao;
+﻿using eAgenda.Aplicacao.Compartilhado;
+using eAgenda.Dominio.ModuloAutenticacao;
 using FluentResults;
 using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;

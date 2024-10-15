@@ -1,46 +1,55 @@
-using eAgenda.WebApi.Config;
+using eAgenda.Dominio;
+using eAgenda.Infra.Orm.Compartilhado;
 
-namespace eAgenda.WebApi
+namespace eAgenda.WebApi;
+
+public class Program
 {
-    public class Program
+    private const string NomeCors = "Desenvolvimento";
+
+    public static void Main(string[] args)
     {
-        static string nomeCors = "Desenvolvimento";
+        var builder = WebApplication.CreateBuilder(args);
 
-        public static void Main(string[] args)
+        builder.Services.ConfigurarValidacao();
+        builder.Services.ConfigurarIdentity();
+        builder.Services.ConfigurarSerilog(builder.Logging);
+        builder.Services.ConfigurarAutoMapper();
+        builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
+        builder.Services.ConfigurarSwagger();
+        builder.Services.ConfigurarControllers();
+        builder.Services.ConfigurarJwt();
+        builder.Services.ConfigurarCors(NomeCors);
+
+        var app = builder.Build();
+
+        app.UseMiddleware<ManipuladorExcecoes>();
+
+        if (app.Environment.IsDevelopment())
         {
-            var builder = WebApplication.CreateBuilder(args);
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
-            builder.Services.ConfigurarValidacao();
-            builder.Services.ConfigurarIdentity();
-            builder.Services.ConfigurarSerilog(builder.Logging);
-            builder.Services.ConfigurarAutoMapper();
-            builder.Services.ConfigurarInjecaoDependencia(builder.Configuration);
-            builder.Services.ConfigurarSwagger();
-            builder.Services.ConfigurarControllers();
-            builder.Services.ConfigurarJwt();
-            builder.Services.ConfigurarCors(nomeCors);
+            using var scope = app.Services.CreateScope();
 
-            var app = builder.Build();
+            var dbContext = scope.ServiceProvider.GetRequiredService<IContextoPersistencia>();
 
-            app.UseMiddleware<ManipuladorExcecoes>();
-
-            if (app.Environment.IsDevelopment())
+            if (dbContext is EAgendaDbContext eAgendaDbContext)
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                MigradorBancoDados.AtualizarBancoDados(eAgendaDbContext);
             }
-
-            app.UseHttpsRedirection();
-
-            app.UseCors(nomeCors);
-
-            app.UseAuthentication();
-
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();
         }
+
+        app.UseHttpsRedirection();
+
+        app.UseCors(NomeCors);
+
+        app.UseAuthentication();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
     }
 }

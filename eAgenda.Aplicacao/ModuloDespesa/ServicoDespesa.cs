@@ -1,4 +1,5 @@
-﻿using eAgenda.Dominio;
+﻿using eAgenda.Aplicacao.Compartilhado;
+using eAgenda.Dominio;
 using eAgenda.Dominio.ModuloDespesa;
 using FluentResults;
 using Serilog;

@@ -1,6 +1,6 @@
 ﻿using eAgenda.Aplicacao.ModuloAutenticacao;
 using eAgenda.Dominio.ModuloAutenticacao;
-using eAgenda.Infra.Orm;
+using eAgenda.Infra.Orm.Compartilhado;
 using eAgenda.WebApi.Config.IdentityConfig;
 using Microsoft.AspNetCore.Identity;
 
@@ -16,7 +16,7 @@ namespace eAgenda.WebApi.Config
             {
                 options.User.RequireUniqueEmail = true;
             })
-            .AddEntityFrameworkStores<eAgendaDbContext>()
+            .AddEntityFrameworkStores<EAgendaDbContext>()
             .AddDefaultTokenProviders()
             .AddErrorDescriber<eAgendaIdentityErrorDescriber>();
         }
