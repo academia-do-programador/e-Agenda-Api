@@ -8,7 +8,7 @@ using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
-using eAgenda.Infra.Orm;
+using eAgenda.Infra.Orm.Compartilhado;
 using eAgenda.Infra.Orm.ModuloCompromisso;
 using eAgenda.Infra.Orm.ModuloContato;
 using eAgenda.Infra.Orm.ModuloDespesa;
@@ -21,11 +21,11 @@ namespace eAgenda.WebApi.Config
     {
         public static void ConfigurarInjecaoDependencia(this IServiceCollection services, IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("PostgreSql");
+            var connectionString = configuration.GetConnectionString("SqlServer");
 
-            services.AddDbContext<IContextoPersistencia, eAgendaDbContext>(optionsBuilder =>
+            services.AddDbContext<IContextoPersistencia, EAgendaDbContext>(optionsBuilder =>
             {
-                optionsBuilder.UseNpgsql(connectionString);
+                optionsBuilder.UseSqlServer(connectionString);
             });
 
             services.AddTransient<ITenantProvider, ApiTenantProvider>();

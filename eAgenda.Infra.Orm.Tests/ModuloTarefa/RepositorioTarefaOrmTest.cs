@@ -1,25 +1,25 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
-//using eAgenda.Infra.Configs;
-using eAgenda.Infra.Orm;
+using eAgenda.Infra.Orm.Compartilhado;
 using eAgenda.Infra.Orm.ModuloTarefa;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+//using eAgenda.Infra.Configs;
 
-namespace eAgenda.Infra.BancoDados.Tests.ModuloTarefa
+namespace eAgenda.Infra.Orm.Tests.ModuloTarefa
 {
     [TestClass]
     public class RepositorioTarefaOrmTest
     {
-        private readonly eAgendaDbContext db;
+        private readonly EAgendaDbContext db;
 
         public RepositorioTarefaOrmTest()
         {
-            var builder = new DbContextOptionsBuilder<eAgendaDbContext>();
+            var builder = new DbContextOptionsBuilder<EAgendaDbContext>();
 
             builder.UseSqlServer(@"Data Source=(LOCALDB)\MSSQLLOCALDB;Initial Catalog=eAgendaOrm;Integrated Security=True");
 
-            db = new eAgendaDbContext(builder.Options);
+            db = new EAgendaDbContext(builder.Options);
 
             db.Set<ItemTarefa>().RemoveRange(db.Set<ItemTarefa>());
             db.Set<Tarefa>().RemoveRange(db.Set<Tarefa>());
