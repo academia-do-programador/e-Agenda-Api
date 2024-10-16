@@ -47,8 +47,12 @@ namespace eAgenda.Aplicacao.ModuloAutenticacao
             if (loginResult.IsNotAllowed)
                 erros.Add(new Error("O login ou a senha estão incorretas"));
 
+            if (!loginResult.Succeeded)
+                erros.Add(new Error("Login falhou: senha incorreta"));
+
             if (erros.Count > 0)
                 return Result.Fail(erros);
+
 
             var usuario = await userManager.FindByNameAsync(login);
 
