@@ -6,12 +6,13 @@
         {
             services.AddCors(config =>
              {
-                 config.AddPolicy(nome, services =>
+                 config.AddPolicy(nome, politica =>
                  {
-                     services
+                     politica
+                         .WithOrigins("http://localhost:4200") // Permite apenas a origem da aplicação Angular
                          .AllowAnyHeader()
                          .AllowAnyMethod()
-                         .AllowAnyOrigin();
+                         .AllowCredentials();
                  });
              });
         }
